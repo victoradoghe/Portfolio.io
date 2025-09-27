@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1220"/>
+      <stop offset="1" stop-color="#111A2E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="220" cy="160" r="180" fill="#7A5CFF" fill-opacity=".18"/>
+  <circle cx="960" cy="120" r="160" fill="#56CCF2" fill-opacity=".14"/>
+  <text x="80" y="340" fill="#E6E9F2" font-family="Inter, Segoe UI, Arial" font-weight="800" font-size="72">Victor Adoghe</text>
+  <text x="80" y="410" fill="#B7C0D6" font-family="Inter, Segoe UI, Arial" font-size="34">I build web apps that humans enjoy.</text>
+  <rect x="80" y="440" width="360" height="6" rx="3" fill="#7A5CFF"/>
+</svg>
+
+

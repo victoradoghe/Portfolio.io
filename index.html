@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en" data-theme="auto" data-reduced-motion="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Victor Adoghe — Portfolio</title>
+    <meta name="description" content="Victor Adoghe — Front-end / Full‑stack Developer portfolio. Projects, case studies, blog, and contact.">
+    <meta name="theme-color" content="#0b1220">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://example.com/">
+    <link rel="icon" href="assets/favicon.svg">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Victor Adoghe — Portfolio">
+    <meta property="og:description" content="Front-end / Full‑stack Developer portfolio. Projects, case studies, blog, and contact.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/og-image-template.svg">
+    <meta property="og:url" content="https://example.com/">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Victor Adoghe",
+        "url": "https://example.com/",
+        "jobTitle": "Front-end / Full-stack Developer",
+        "sameAs": [
+          "https://github.com/",
+          "https://www.linkedin.com/"
+        ]
+      }
+    </script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" role="banner">
+      <div class="container">
+        <a class="brand" href="#hero" aria-label="Home">Victor<span class="brand-accent">.</span></a>
+        <nav class="site-nav" aria-label="Primary">
+          <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
+            <img src="assets/icons/menu.svg" alt="Open menu" width="24" height="24">
+          </button>
+          <ul id="nav-menu" class="nav-menu">
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode">
+            <img class="icon-sun" src="assets/icons/sun.svg" alt="Light" width="20" height="20">
+            <img class="icon-moon" src="assets/icons/moon.svg" alt="Dark" width="20" height="20">
+          </button>
+          <button id="motionToggle" class="icon-btn" aria-label="Toggle reduced motion">
+            <img src="assets/icons/sparkles.svg" alt="Motion" width="20" height="20">
+          </button>
+          <a class="btn btn-ghost small" href="assets/Victor_Adoghe_Resume.pdf" download>Resume</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section id="hero" class="hero" aria-labelledby="hero-title">
+        <div class="hero-bg" aria-hidden="true">
+          <canvas id="particleCanvas"></canvas>
+          <img class="hero-gradient" src="assets/hero-bg.svg" alt="" loading="eager" decoding="async">
+        </div>
+        <div class="container hero-inner">
+          <div class="hero-content">
+            <h1 id="hero-title" class="hero-title">
+              Hi — I’m <span class="accent">Victor Adoghe</span>,
+              I build web apps humans enjoy.
+            </h1>
+            <p class="hero-subtitle">
+              <span id="roleRotator" class="rotator" aria-live="polite">Junior Front‑end Engineer</span>
+            </p>
+            <div class="hero-ctas">
+              <a href="#projects" class="btn btn-primary cta-glow" id="viewProjects">View Projects</a>
+              <a href="assets/Victor_Adoghe_Resume.pdf" class="btn btn-ghost" download>Download Resume</a>
+              <span class="cta-cursor-glow" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills" class="section" aria-labelledby="skills-title">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="skills-title">Skills</h2>
+            <div class="section-actions">
+              <button id="skillsModeToggle" class="chip" aria-pressed="false">Switch to Cloud</button>
+            </div>
+          </div>
+          <div class="skills-wrapper" data-mode="rings">
+            <div class="ring-grid" role="list">
+              <button class="skill-ring" role="listitem" aria-label="JavaScript 55%" data-skill="JavaScript" data-percent="55">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52" />
+                  <circle class="ring-progress" cx="60" cy="60" r="52" />
+                </svg>
+                <span class="skill-percent">50%</span>
+                <span class="skill-label">JavaScript<img src="assets/icons/javascript.svg" alt="" class="skill-icon" aria-hidden="true"></span>
+              </button>
+              <button class="skill-ring" aria-label="HTML 95%" data-skill="HTML" data-percent="95">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52" />
+                  <circle class="ring-progress" cx="60" cy="60" r="52" />
+                </svg>
+                <span class="skill-percent">95%</span>
+                <span class="skill-label">HTML<img src="assets/icons/html.svg" alt="" class="skill-icon" aria-hidden="true"></span>
+              </button>
+              <button class="skill-ring" aria-label="React 25%" data-skill="React" data-percent="25">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52" />
+                  <circle class="ring-progress" cx="60" cy="60" r="52" />
+                </svg>
+                <span class="skill-percent">10%</span>
+                <span class="skill-label">React<img src="assets/icons/react.svg" alt="" class="skill-icon" aria-hidden="true"></span>
+              </button>
+              <button class="skill-ring" aria-label="Node.js 10%" data-skill="Node.js" data-percent="10">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52" />
+                  <circle class="ring-progress" cx="60" cy="60" r="52" />
+                </svg>
+                <span class="skill-percent">10%</span>
+                <span class="skill-label">Node.js<img src="assets/icons/nodejs.svg" alt="" class="skill-icon" aria-hidden="true"></span>
+              </button>
+              <button class="skill-ring" aria-label="CSS 65%" data-skill="CSS" data-percent="65">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52" />
+                  <circle class="ring-progress" cx="60" cy="60" r="52" />
+                </svg>
+                <span class="skill-percent">65%</span>
+                <span class="skill-label">CSS<img src="assets/icons/css.svg" alt="" class="skill-icon" aria-hidden="true"></span>
+              </button>
+              <button class="skill-ring" aria-label="Accessibility 80%" data-skill="A11y" data-percent="80">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52" />
+                  <circle class="ring-progress" cx="60" cy="60" r="52" />
+                </svg>
+                <span class="skill-percent">80%</span>
+                <span class="skill-label">Accessibility<img src="assets/icons/accessibility.svg" alt="" class="skill-icon" aria-hidden="true"></span>
+              </button>
+              <button class="skill-ring" aria-label="Content Writing 70%" data-skill="Content Writing" data-percent="70">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52" />
+                  <circle class="ring-progress" cx="60" cy="60" r="52" />
+                </svg>
+                <span class="skill-percent">70%</span>
+                <span class="skill-label">Content Writing<img src="assets/icons/writing.svg" alt="" class="skill-icon" aria-hidden="true"></span>
+              </button>
+              <button class="skill-ring" aria-label="Python 50%" data-skill="Python" data-percent="50">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="ring-bg" cx="60" cy="60" r="52" />
+                  <circle class="ring-progress" cx="60" cy="60" r="52" />
+                </svg>
+                <span class="skill-percent">50%</span>
+                <span class="skill-label">Python<img src="assets/icons/python.svg" alt="" class="skill-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="skill-cloud" hidden>
+              <button class="cloud-item" data-weight="9">JavaScript</button>
+              <button class="cloud-item" data-weight="9">HTML</button>
+              <button class="cloud-item" data-weight="7">React</button>
+              <button class="cloud-item" data-weight="6">Node.js</button>
+              <button class="cloud-item" data-weight="9">CSS</button>
+              <button class="cloud-item" data-weight="7">Content Writing</button>
+              <button class="cloud-item" data-weight="5">Python</button>
+              <button class="cloud-item" data-weight="5">GraphQL</button>
+            </div>
+            <details class="skill-accessible">
+              <summary>Accessible skill list</summary>
+              <ul>
+                <li>
+                  <label for="skill-js">JavaScript</label>
+                  <progress id="skill-js" value="50" max="100">50%</progress>
+                </li>
+                <li>
+                  <label for="skill-html">HTML</label>
+                  <progress id="skill-html" value="95" max="100">95%</progress>
+                </li>
+                <li>
+                  <label for="skill-css">CSS</label>
+                  <progress id="skill-css" value="65" max="100">65%</progress>
+                </li>
+                <li>
+                  <label for="skill-writing">Content Writing</label>
+                  <progress id="skill-writing" value="70" max="100">70%</progress>
+                </li>
+                <li>
+                  <label for="skill-python">Python</label>
+                  <progress id="skill-python" value="50" max="100">50%</progress>
+                </li>
+              </ul>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="section" aria-labelledby="projects-title">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="projects-title">Projects</h2>
+            <div class="filters" role="toolbar" aria-label="Project filters">
+              <button class="chip is-active" data-filter="all" aria-pressed="true">All</button>
+              <button class="chip" data-filter="frontend">Front‑end</button>
+              <button class="chip" data-filter="fullstack">Full‑stack</button>
+              <button class="chip" data-filter="ui">UI</button>
+            </div>
+          </div>
+          <div class="project-grid" role="list">
+            <article class="project-card" role="listitem" data-tags="frontend ui">
+              <img src="/assets/TicTacToe canva real.png" alt="TicTacToe Display" loading="lazy">
+              <div class="card-body">
+                <h3>TicTacToe</h3>
+                <p class="muted">TicTacToe Gameplay Display</p>
+                <div class="tech">React, Css</div>
+              </div>
+              <div class="card-overlay">
+                <a class="btn btn-primary" href="case-studies/tictactoe.html">View case study</a>
+                <a class="btn btn-ghost" href="https://github.com/victoradoghe/TicTacToe-Pro" target="_blank" rel="noreferrer noopener">GitHub</a>
+              </div>
+            </article>
+
+            <article class="project-card" role="listitem" data-tags="frontend ui">
+              <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=1200&q=80&auto=format&fit=crop" alt="E‑commerce storefront" loading="lazy">
+              <div class="card-body">
+                <h3>DoneMate</h3>
+                <p class="muted">To-Do App</p>
+                <div class="tech">React, Css</div>
+              </div>
+              <div class="card-overlay">
+                <button class="btn btn-primary" href="case-studie" >View case study</button>
+                <a class="btn btn-ghost" href="https://victoradoghe.github.io/DoneMate.io/" target="_blank" rel="noreferrer noopener">GitHub</a>
+              </div>
+            </article>
+
+            <article class="project-card" role="listitem" data-tags="frontend">
+              <img src="/assets/DoneMate.png" alt="Developer blog" loading="lazy">
+              <div class="card-body">
+                <h3>DoneMate</h3>
+                <p class="muted">To-Do-App</p>
+                <div class="tech">React, Css</div>
+              </div>
+              <div class="card-overlay">
+                <a class="btn btn-primary" href="/case-studies/donemate.html">View case study</a>
+                <a class="btn btn-ghost" href="https://github.com/victoradoghe/DoneMate.io" target="_blank" rel="noreferrer noopener">GitHub</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Timeline / Experience -->
+      <section id="experience" class="section" aria-labelledby="experience-title">
+        <div class="container">
+          <h2 id="experience-title">Experience</h2>
+          <ol class="timeline">
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <button class="timeline-header" aria-expanded="false">
+                <div>
+                  <strong>Freelance Front‑end Projects</strong>
+                  <span class="muted">Self‑employed</span>
+                </div>
+                <span class="muted">2023 — Present</span>
+              </button>
+              <div class="timeline-content" hidden>
+                <ul>
+                  <li>Edited and implemented responsive web designs for clients (Figma → HTML/CSS/JS).</li>
+                  <li>Built small landing pages and UI components; improved Lighthouse scores and accessibility.</li>
+                  <li>Collaborated asynchronously with clear handoffs, changelogs, and Git history.</li>
+                </ul>
+              </div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <button class="timeline-header" aria-expanded="false">
+                <div>
+                  <strong>Personal Projects & Learning</strong>
+                  <span class="muted">Portfolio development</span>
+                </div>
+                <span class="muted">Ongoing</span>
+              </button>
+              <div class="timeline-content" hidden>
+                <ul>
+                  <li>Created and iterated on small web apps and UI experiments using HTML, CSS, and JavaScript.</li>
+                  <li>Practiced performance, accessibility, and semantic HTML fundamentals.</li>
+                  <li>Deployed projects and wrote concise documentation for maintainability.</li>
+                </ul>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Blog teaser -->
+      <section id="blog" class="section" aria-labelledby="blog-title">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="blog-title">Latest Articles</h2>
+            <a class="link" href="#">View all</a>
+          </div>
+          <div class="blog-grid" role="list">
+            <article class="blog-card" role="listitem">
+              <div class="chips"><span class="chip small">Performance</span></div>
+              <h3><a href="#">Hydration Myths: What Actually Blocks Paint?</a></h3>
+              <p class="muted">A practical deep dive into perceived vs real performance.</p>
+              <div class="meta"><img src="assets/icons/clock.svg" alt="" width="16" height="16"> 6 min read</div>
+            </article>
+            <article class="blog-card" role="listitem">
+              <div class="chips"><span class="chip small">Accessibility</span></div>
+              <h3><a href="#">Building Keyboard‑First UIs</a></h3>
+              <p class="muted">Patterns for focus, roving tabindex, and active states.</p>
+              <div class="meta"><img src="assets/icons/clock.svg" alt="" width="16" height="16"> 7 min read</div>
+            </article>
+            <article class="blog-card" role="listitem">
+              <div class="chips"><span class="chip small">CSS</span></div>
+              <h3><a href="#">Modern Masonry Without Libraries</a></h3>
+              <p class="muted">Grid, columns, and container queries — when to use which.</p>
+              <div class="meta"><img src="assets/icons/clock.svg" alt="" width="16" height="16"> 5 min read</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="section" aria-labelledby="contact-title">
+        <div class="container">
+          <h2 id="contact-title">Contact</h2>
+          <form id="contactForm" class="contact-form" novalidate>
+            <div class="grid">
+              <label>
+                <span>Name</span>
+                <input name="name" type="text" required autocomplete="name" />
+              </label>
+              <label>
+                <span>Email</span>
+                <input name="email" type="email" required autocomplete="email" />
+              </label>
+            </div>
+            <label>
+              <span>Message</span>
+              <textarea name="message" rows="5" required></textarea>
+            </label>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Send message</button>
+              <p class="muted">Or email <a href="mailto:victoradoghe112@gmail.com">victoradoghe112@gmail.com</a></p>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="socials">
+          <a class="icon-link" href="https://github.com/victoradoghe" target="_blank" rel="noreferrer noopener"><img src="assets/icons/github.svg" alt="GitHub" width="20" height="20"></a>
+          <a class="icon-link" href="https://x.com/D3vnox" target="_blank" rel="noreferrer noopener"><img src="assets/icons/twitter.svg" alt="X (Twitter)" width="20" height="20"></a>
+        </div>
+        <p class="muted">© <span id="year"></span> Victor Adoghe — Built with HTML, CSS, and JavaScript</p>
+      </div>
+    </footer>
+
+    <!-- Case Study Modal -->
+    <div id="caseStudyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="modal-backdrop" data-close></div>
+      <div class="modal-dialog" role="document" aria-describedby="modal-desc">
+        <header class="modal-header">
+          <h3 id="modal-title">Case Study</h3>
+          <button class="icon-btn" data-close aria-label="Close">
+            <img src="assets/icons/close.svg" alt="Close" width="20" height="20">
+          </button>
+        </header>
+        <div class="modal-content" id="modal-desc">
+          <p class="muted">Loading…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toasts -->
+    <div id="toastContainer" aria-live="polite" aria-atomic="true" class="toast-container"></div>
+  </body>
+</html>
+
+

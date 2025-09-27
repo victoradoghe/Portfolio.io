@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Case Study — Insight Dashboard</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body>
+    <main class="section container">
+      <article class="case">
+        <header>
+          <h1>Insight Dashboard</h1>
+          <p class="muted">Analytics dashboard with custom charts — React, TypeScript, D3</p>
+        </header>
+        <section>
+          <h2>Problem</h2>
+          <p>Stakeholders needed real‑time insight into KPIs with drill‑downs and exportable reports.</p>
+        </section>
+        <section>
+          <h2>Approach</h2>
+          <ul>
+            <li>Componentized chart primitives with D3 + SVG.</li>
+            <li>Virtualized tables for 50k+ rows.</li>
+            <li>Design system tokens and themes.</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Solution</h2>
+          <p>Built a responsive, accessible dashboard with server‑driven widgets and optimistic updates.</p>
+        </section>
+        <section>
+          <h2>Technical Stack</h2>
+          <p>React, TypeScript, D3, Node, PostgreSQL, Tailwind tokens.</p>
+        </section>
+        <section>
+          <h2>Code Snippet</h2>
+          <pre><code class="language-js">// simple moving average
+function movingAverage(values, window = 7) {
+  const result = [];
+  for (let i = 0; i < values.length; i++) {
+    const start = Math.max(0, i - window + 1);
+    const slice = values.slice(start, i + 1);
+    result.push(slice.reduce((a,b) => a + b, 0) / slice.length);
+  }
+  return result;
+}
+          </code></pre>
+          <button class="btn btn-ghost" onclick="navigator.clipboard.writeText(document.querySelector('pre code').innerText)">Copy</button>
+        </section>
+        <section>
+          <h2>Results</h2>
+          <ul>
+            <li>Reduced time‑to‑insight by 40%.</li>
+            <li>Improved dashboard FCP by 28%.</li>
+          </ul>
+        </section>
+        <p>
+          <a class="btn btn-primary" href="http://localhost:5173/" target="_blank" rel="noreferrer noopener">Live Demo</a>
+          <a class="btn btn-ghost" href="https://github.com/" target="_blank" rel="noreferrer noopener">GitHub</a>
+        </p>
+      </article>
+    </main>
+  </body>
+  </html>
+
+

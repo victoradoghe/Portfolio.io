@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <radialGradient id="g1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(300 200) rotate(45) scale(600 400)">
+      <stop stop-color="#7A5CFF" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#7A5CFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1300 120) rotate(45) scale(500 350)">
+      <stop stop-color="#56CCF2" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#56CCF2" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#0B1220"/>
+  <circle cx="280" cy="180" r="400" fill="url(#g1)"/>
+  <circle cx="1320" cy="120" r="320" fill="url(#g2)"/>
+  <g opacity=".4" stroke="#B9C0D5" stroke-opacity=".15">
+    <path d="M0 740C260 560 460 560 800 720C1140 880 1340 880 1600 700"/>
+    <path d="M0 800C260 620 460 620 800 780C1140 940 1340 940 1600 760"/>
+    <path d="M0 860C260 680 460 680 800 840C1140 1000 1340 1000 1600 820"/>
+  </g>
+</svg>
+
+

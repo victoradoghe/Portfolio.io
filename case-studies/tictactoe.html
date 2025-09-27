@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Case Study — TicTacToe Game</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body>
+    <main class="section container">
+      <article class="case">
+        <header>
+          <h1>TicTacToe Game</h1>
+          <p class="muted">Interactive TicTacToe game with modern UI — React, CSS</p>
+        </header>
+        
+        <section>
+          <h2>Problem</h2>
+          <p>Create an engaging, interactive TicTacToe game that demonstrates React fundamentals while providing a smooth, modern user experience. The game needed to be responsive, accessible, and visually appealing with clear game state management.</p>
+        </section>
+        
+        <section>
+          <h2>Approach</h2>
+          <ul>
+            <li>Built with React functional components and hooks for state management</li>
+            <li>Implemented game logic with clean, maintainable code structure</li>
+            <li>Designed responsive UI with modern CSS styling and animations</li>
+            <li>Added accessibility features for inclusive gameplay</li>
+            <li>Created intuitive game flow with clear visual feedback</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>Solution</h2>
+          <p>Developed a fully functional TicTacToe game with React that features turn-based gameplay, win detection, game reset functionality, and a clean, modern interface. The game includes visual indicators for current player, game status, and smooth transitions between game states.</p>
+        </section>
+        
+        <section>
+          <h2>Technical Stack</h2>
+          <p>React, CSS3, JavaScript ES6+, HTML5, Git version control</p>
+        </section>
+        
+        <section>
+          <h2>Key Features</h2>
+          <ul>
+            <li>Turn-based gameplay with X and O players</li>
+            <li>Automatic win detection for rows, columns, and diagonals</li>
+            <li>Draw detection when no winner is possible</li>
+            <li>Game reset functionality to start new games</li>
+            <li>Responsive design that works on all screen sizes</li>
+            <li>Visual feedback for current player and game status</li>
+            <li>Accessible keyboard navigation and screen reader support</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>Code Snippet</h2>
+          <pre><code class="language-jsx">// Game state management with React hooks
+const [board, setBoard] = useState(Array(9).fill(null));
+const [xIsNext, setXIsNext] = useState(true);
+
+const handleClick = (i) => {
+  if (calculateWinner(board) || board[i]) {
+    return;
+  }
+  
+  const newBoard = board.slice();
+  newBoard[i] = xIsNext ? 'X' : 'O';
+  setBoard(newBoard);
+  setXIsNext(!xIsNext);
+};
+
+const calculateWinner = (squares) => {
+  const lines = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+    [0, 4, 8], [2, 4, 6] // diagonals
+  ];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+};
+          </code></pre>
+          <button class="btn btn-ghost" onclick="navigator.clipboard.writeText(document.querySelector('pre code').innerText)">Copy</button>
+        </section>
+        
+        <section>
+          <h2>Development Process</h2>
+          <ul>
+            <li>Started with basic React component structure and game board layout</li>
+            <li>Implemented core game logic with state management using useState hook</li>
+            <li>Added win detection algorithm for all possible winning combinations</li>
+            <li>Styled the game board and pieces with modern CSS</li>
+            <li>Enhanced user experience with visual feedback and animations</li>
+            <li>Tested responsiveness across different screen sizes</li>
+            <li>Optimized code for performance and maintainability</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>Results</h2>
+          <ul>
+            <li>Successfully created a fully functional TicTacToe game</li>
+            <li>Demonstrated React fundamentals and best practices</li>
+            <li>Achieved responsive design that works on mobile and desktop</li>
+            <li>Implemented clean, readable code structure</li>
+            <li>Created an engaging user experience with smooth interactions</li>
+            <li>Built a solid foundation for future React projects</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>Learning Outcomes</h2>
+          <ul>
+            <li>Gained hands-on experience with React hooks and state management</li>
+            <li>Learned to structure React components for maintainability</li>
+            <li>Practiced responsive CSS design principles</li>
+            <li>Understood game logic implementation in JavaScript</li>
+            <li>Developed skills in creating interactive user interfaces</li>
+          </ul>
+        </section>
+        
+        <p>
+          <a class="btn btn-primary" href="https://victoradoghe.github.io/TicTacToe-Pro" target="_blank" rel="noreferrer noopener">View Live</a>
+          <a class="btn btn-ghost" href="/index.html" onclick="window.close()">Close</a>
+        </p>
+      </article>
+    </main>
+  </body>
+</html>
