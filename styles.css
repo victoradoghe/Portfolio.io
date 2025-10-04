@@ -66,6 +66,7 @@
   --bg-elev: rgba(0, 10, 32, 0.06);
   --text: #0b1220;
   --muted: #4b5563;
+  --texts: #e6e9f2;
   --border: rgba(0,0,0,0.08);
   --shadow: 0 10px 30px rgba(0,0,0,.08), 0 1px 0 rgba(255,255,255,.45) inset;
   --icon-filter: brightness(0) saturate(100%);
@@ -145,7 +146,7 @@ body {
 .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1rem; border-radius: 12px; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); box-shadow: var(--shadow); cursor: pointer; }
 .btn.small { padding: .5rem .8rem; font-size: .95rem; }
 .btn-primary { background: linear-gradient(180deg, color-mix(in hsl, var(--accent), white 15%), var(--accent)); color: white; border-color: transparent; }
-.btn-ghost { background: transparent; }
+.btn-ghost { background: transparent; color: var(--texts); }
 
 .chip { background: var(--bg-elev); border: 1px solid var(--border); color: var(--text); border-radius: 999px; padding: .4rem .8rem; cursor: pointer; }
 .chip.is-active { background: color-mix(in hsl, var(--accent), transparent 80%); border-color: color-mix(in hsl, var(--accent), white 30%); }
