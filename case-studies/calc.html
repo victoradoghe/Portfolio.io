@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case Study — Smart Calculator</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="section container">
+      <article class="case">
+        <header>
+          <h1>Smart Calculator</h1>
+          <p class="muted">
+            A modern, scientific calculator built with React and Vite — fast, elegant, and feature-rich.
+          </p>
+        </header>
+
+        <section>
+          <h2>Problem</h2>
+          <p>
+            Most web calculators look outdated and lack advanced functionality. I wanted to create
+            a responsive, interactive calculator that not only handles basic arithmetic but also
+            supports scientific functions like trigonometry, logarithms, and memory operations.
+          </p>
+        </section>
+
+        <section>
+          <h2>Approach</h2>
+          <ul>
+            <li>Designed a clean and responsive UI using modern CSS and React components.</li>
+            <li>Implemented core calculator logic with state management using React Hooks.</li>
+            <li>Added advanced features such as square roots, trigonometric functions, and history tracking.</li>
+            <li>Deployed using GitHub Pages with PNPM and Vite configuration for fast builds.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Solution</h2>
+          <p>
+            I built a full-featured calculator app that combines simplicity and power. It includes a
+            real-time display, delete and clear options, memory storage (M+, M-, MR, MC), and
+            trigonometric calculations with a compact scientific layout — all optimized for desktop
+            and mobile experiences.
+          </p>
+        </section>
+
+        <section>
+          <h2>Technical Stack</h2>
+          <p>
+            React, JavaScript (ES6+), Vite, PNPM, CSS3 (Grid/Flexbox), GitHub Pages.
+          </p>
+        </section>
+
+        <section>
+          <h2>Code Snippet</h2>
+          <pre><code class="language-js">
+// Example: Handling trigonometric functions
+function handleFunction(fn) {
+  let value = parseFloat(result || input);
+  switch (fn) {
+    case "sin": return Math.sin((value * Math.PI) / 180);
+    case "cos": return Math.cos((value * Math.PI) / 180);
+    case "tan": return Math.tan((value * Math.PI) / 180);
+    default: return value;
+  }
+}
+          </code></pre>
+          <button
+            class="btn btn-ghost"
+            onclick="navigator.clipboard.writeText(document.querySelector('pre code').innerText)"
+          >
+            Copy
+          </button>
+        </section>
+
+        <section>
+          <h2>Results</h2>
+          <ul>
+            <li>Delivered a fully interactive, mobile-friendly calculator.</li>
+            <li>Added memory and history tracking for enhanced usability.</li>
+            <li>Improved learning of JavaScript logic, React state, and Vite deployment.</li>
+          </ul>
+        </section>
+
+        <p>
+          <a
+            class="btn btn-primary"
+            href="https://victoradoghe.github.io/Calc./"
+            target="_blank"
+            rel="noreferrer noopener"
+            >Live Demo</a
+          >
+          <a
+            class="btn btn-ghost"
+            href="/index.html"
+            target="_blank"
+            rel="noreferrer noopener"
+            >Close</a
+          >
+        </p>
+      </article>
+    </main>
+  </body>
+</html>
