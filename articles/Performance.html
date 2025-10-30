@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case Study — Hydration Performance Myths</title>
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+  <main class="section container">
+    <article class="case">
+
+      <header>
+        <h1>Hydration Myths: What Actually Blocks Paint?</h1>
+        <p class="muted">
+          A practical deep dive into perceived vs real performance — Web Performance & Rendering
+        </p>
+        <hr>
+        <p class="muted small">6 min read</p>
+      </header>
+
+      <!-- Overview -->
+      <section>
+        <h2>Overview</h2>
+        <p>
+          Hydration often gets blamed for “slow” page loads, but most assumptions stem from 
+          misunderstanding how the browser paints and when hydration happens. 
+        </p>
+        <p>
+          In reality, hydration delays <em>interactivity</em>, not <em>pixel paint</em>. 
+          The real bottlenecks are usually render-blocking assets, large JavaScript bundles, 
+          and layout shifts caused by unoptimized resources.
+        </p>
+      </section>
+
+      <!-- What people think -->
+      <section>
+        <h2>Common Hydration Myths</h2>
+
+        <h3>Myth 1: Hydration blocks the first paint</h3>
+        <p><strong>Reality:</strong> First paint comes from HTML + CSS.  
+        Hydration runs later, wiring interactivity.</p>
+
+        <h3>Myth 2: SSR + hydration is slower than CSR</h3>
+        <p><strong>Reality:</strong> SSR delivers faster content; hydration just attaches events.</p>
+
+        <h3>Myth 3: Islands beat hydration in every case</h3>
+        <p><strong>Reality:</strong> Islands shine at scale. Small apps can hydrate faster.</p>
+      </section>
+
+      <!-- What really blocks paint -->
+      <section>
+        <h2>What Actually Blocks Paint</h2>
+        <ul>
+          <li>Render-blocking CSS</li>
+          <li>Large JS bundles shipped upfront</li>
+          <li>Unoptimized images without priority hints</li>
+          <li>Fonts loading without <code>display: swap</code></li>
+          <li>Inline JS that runs before content appears</li>
+        </ul>
+
+        <pre><code>&lt;link rel="preload" href="app.css" as="style"&gt;
+&lt;link rel="stylesheet" href="app.css"&gt;
+&lt;script defer src="bundle.js"&gt;&lt;/script&gt;</code></pre>
+        
+      </section>
+
+      <!-- Hydration explained -->
+      <section>
+        <h2>So What Does Hydration Actually Do?</h2>
+        <p>
+          After the initial HTML renders, hydration attaches event listeners, 
+          replays state, and activates components. It is expensive when:
+        </p>
+        <ul>
+          <li>You hydrate the entire page at once</li>
+          <li>Components ship large JS before paint</li>
+          <li>No idle-time scheduling is used</li>
+        </ul>
+
+        <h3>Idle-time hydration example</h3>
+
+<pre><code>requestIdleCallback(() => {
+  hydrateRoot(document.getElementById('root'), &lt;App /&gt;);
+});</code></pre>
+
+      </section>
+
+      <!-- Optimizations -->
+      <section>
+        <h2>Smarter Hydration Strategies</h2>
+        <ul>
+          <li>Use <strong>streaming SSR</strong> for faster time-to-content</li>
+          <li>Hydrate only visible sections first</li>
+          <li>Defer non-critical interactivity</li>
+          <li>Use <code>import()</code> to hydrate components progressively</li>
+        </ul>
+
+<pre><code>if (isVisible(component)) {
+  import("./component.js").then(init);
+}</code></pre>
+      </section>
+
+      <!-- Conclusion -->
+      <section>
+        <h2>Conclusion</h2>
+        <p>
+          Hydration isn't the villain — heavy bundles and blocking resources are. 
+          With streaming, selective hydration, and lazy interactivity, 
+          you can deliver fast paint <em>and</em> fast interaction.
+        </p>
+        <p>
+          Treat hydration like scheduling, not rendering — and your UI performance improves naturally.
+        </p>
+      </section>
+
+      <p>
+        <a class="btn btn-ghost" href="/index.html">Close</a>
+      </p>
+
+    </article>
+  </main>
+</body>
+</html>

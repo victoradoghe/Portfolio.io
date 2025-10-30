@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case Study — Keyboard-First UI Design</title>
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+  <main class="section container">
+    <article class="case">
+
+      <header>
+        <h1>Building Keyboard-First UIs</h1>
+        <p class="muted">Patterns for focus, roving tabindex, and active states — A11y & JavaScript</p>
+        <hr>
+        <p class="muted small">7 min read</p>
+      </header>
+
+      <!-- Introduction -->
+      <section>
+        <h2>Overview</h2>
+        <p>
+          Keyboard-first design focuses on enabling full UI interaction through the keyboard alone —
+          not as an after-thought, but as a primary interaction model. This approach benefits users who
+          rely on assistive technology, power users, developers, and anyone who values fast navigation.
+        </p>
+        <p>
+          A fully accessible UI must support: tabbing, roving tabindex, visible focus states,
+          meaningful active states, and proper ARIA roles. Here’s how to structure modern,
+          robust keyboard-first interfaces.
+        </p>
+      </section>
+
+      <!-- Why -->
+      <section>
+        <h2>Why Keyboard-First?</h2>
+        <ul>
+          <li>Screen reader and assistive tech support</li>
+          <li>Fast navigation for power users</li>
+          <li>Better UX for input-limited environments (TVs, kiosks, terminals)</li>
+          <li>Meets WCAG and accessibility compliance standards</li>
+        </ul>
+        <p>
+          If a UI works with a keyboard, it works everywhere. The inverse is not true.
+        </p>
+      </section>
+
+      <!-- Focus -->
+      <section>
+        <h2>Focus Management</h2>
+        <p>
+          Every interactive element must be reachable and visually highlighted when focused:
+        </p>
+
+<pre><code>button:focus,
+a:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}</code></pre>
+
+        <p>Never remove outlines without providing an accessible replacement.</p>
+      </section>
+
+      <!-- Roving Tabindex -->
+      <section>
+        <h2>Roving Tabindex</h2>
+        <p>
+          In complex widgets (menu bars, carousels, listboxes), tabbing inside every element becomes
+          overwhelming. Instead, use the roving tabindex pattern:
+        </p>
+        <ul>
+          <li>Only one child receives <code>tabindex=\"0\"</code> — the current active item</li>
+          <li>All other items use <code>tabindex=\"-1\"</code> and are focused with arrow keys</li>
+        </ul>
+
+        <h3>Example: Roving Tabindex Navigation</h3>
+
+<pre><code>const items = document.querySelectorAll('.item');
+let index = 0;
+
+items[index].setAttribute('tabindex', '0');
+
+items.forEach((item, i) => {
+  item.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' && i < items.length - 1) index++;
+    if (e.key === 'ArrowLeft' && i > 0) index--;
+
+    items.forEach(el => el.setAttribute('tabindex', '-1'));
+    items[index].setAttribute('tabindex', '0');
+    items[index].focus();
+  });
+});
+</code></pre>
+
+        <p>This pattern provides predictable, controllable keyboard navigation.</p>
+      </section>
+
+      <!-- Active and ARIA -->
+      <section>
+        <h2>Active States & ARIA Attributes</h2>
+        <p>
+          Keyboard users must receive feedback equivalent to mouse hover/active states.
+        </p>
+
+<pre><code>[role=\"button\"]:active,
+button:active {
+  transform: scale(0.96);
+}</code></pre>
+
+        <p>When using custom controls, always apply ARIA roles:</p>
+
+<pre><code>&lt;div role=\"button\" tabindex=\"0\"&gt;Submit&lt;/div&gt;</code></pre>
+
+        <p>
+          Add <code>aria-pressed</code>, <code>aria-selected</code>, or <code>aria-expanded</code>
+          where appropriate so screen readers understand interaction state.
+        </p>
+      </section>
+
+      <!-- Keyboard Patterns -->
+      <section>
+        <h2>Common Keyboard Patterns</h2>
+        <ul>
+          <li><strong>Enter/Space</strong> activates interactive elements</li>
+          <li><strong>Arrow keys</strong> navigate menus/lists/carousels</li>
+          <li><strong>Escape</strong> closes dialogs & menus</li>
+        </ul>
+
+<pre><code>element.addEventListener('keydown', e => {
+  if (['Enter', ' '].includes(e.key)) element.click();
+});</code></pre>
+
+      </section>
+
+      <!-- Testing -->
+      <section>
+        <h2>Testing Keyboard Accessibility</h2>
+        <p>Checklist:</p>
+        <ul>
+          <li>Navigate entire UI with <kbd>Tab</kbd> and <kbd>Shift + Tab</kbd></li>
+          <li>Interactive elements show a visible focus ring</li>
+          <li>Arrow keys move between components where appropriate</li>
+          <li>Escape closes overlays</li>
+          <li>No focus traps</li>
+        </ul>
+      </section>
+
+      <!-- Conclusion -->
+      <section>
+        <h2>Conclusion</h2>
+        <p>
+          Building keyboard-first UIs isn’t optional — it’s foundational to
+          performance, accessibility, and usability. With roving tabindex, proper focus states, and
+          ARIA semantics, we can create interfaces that work for everyone.
+        </p>
+      </section>
+
+      <p>
+        <a class="btn btn-ghost" href="/index.html">Close</a>
+      </p>
+
+    </article>
+  </main>
+</body>
+</html>
