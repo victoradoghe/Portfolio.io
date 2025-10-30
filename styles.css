@@ -157,6 +157,11 @@ body {
 
 .muted { color: var(--muted); }
 
+.meta img{
+  color: green;
+  filter: var(--icon-filter);
+
+}
 /* Hero */
 .hero { position: relative; padding: var(--space-48) 0 var(--space-32); min-height: 80vh; display: grid; place-items: center; overflow: clip; }
 .hero-ctas { flex-wrap: wrap; }
