@@ -197,8 +197,8 @@ h2 { font-size: var(--fs-800); margin: 0; }
 /* Skills */
 .skills-wrapper { display: grid; gap: 1rem; }
 .ring-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; }
-.skill-ring { position: relative; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: grid; place-items: center; cursor: pointer; transition: transform .2s ease; color: var(--text); }
-.skill-ring:hover { transform: translateY(-2px); }
+.skill-ring { position: relative; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: grid; place-items: center; cursor: pointer; transition: transform .2s ease; color: var(--text); box-shadow: 5px 5px;}
+.skill-ring:hover { transform: translateY(-2px); box-shadow: 0px 0px;}
 .skill-ring svg { width: 160px; height: 160px; display: block; }
 .ring-bg { fill: none; stroke: rgba(255,255,255,.12); stroke-width: 10; }
 .ring-progress { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: 327; stroke-dashoffset: 327; transition: stroke-dashoffset .8s ease; filter: drop-shadow(0 6px 20px color-mix(in hsl, var(--accent), transparent 60%)); }
