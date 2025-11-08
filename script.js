@@ -275,19 +275,88 @@ function initModal() {
   });
 }
 
-// Contact form mock submit
+// Contact form with EmailJS
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
-  form.addEventListener('submit', (e) => {
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const btnText = submitBtn.querySelector('.btn-text');
+  const btnLoader = submitBtn.querySelector('.btn-loader');
+  const successMsg = form.querySelector('.form-message.success');
+  const errorMsg = form.querySelector('.form-message.error');
+
+  function showLoading(isLoading) {
+    btnText.hidden = isLoading;
+    btnLoader.hidden = !isLoading;
+    submitBtn.disabled = isLoading;
+  }
+
+  function showMessage(type, show = true) {
+    successMsg.hidden = type !== 'success' || !show;
+    errorMsg.hidden = type !== 'error' || !show;
+    if (show) {
+      const msgEl = type === 'success' ? successMsg : errorMsg;
+      msgEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function validateForm() {
+    const inputs = form.querySelectorAll('input, textarea');
+    let isValid = true;
+
+    inputs.forEach(input => {
+      const errorElement = input.parentElement.querySelector('.error-message');
+      errorElement.textContent = '';
+
+      if (!input.checkValidity()) {
+        isValid = false;
+        if (input.validity.valueMissing) {
+          errorElement.textContent = `${input.name} is required`;
+        } else if (input.validity.typeMismatch && input.type === 'email') {
+          errorElement.textContent = 'Please enter a valid email address';
+        } else if (input.validity.tooShort) {
+          errorElement.textContent = `${input.name} must be at least ${input.minLength} characters`;
+        }
+      }
+    });
+
+    return isValid;
+  }
+
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(form).entries());
-    if (!data.name || !data.email || !data.message) {
-      toast('Please fill all fields');
+    showMessage('success', false);
+    showMessage('error', false);
+
+    if (!validateForm()) {
       return;
     }
-    toast('Thanks! I will get back to you.');
-    form.reset();
+
+    showLoading(true);
+
+    try {
+      const templateParams = {
+        from_name: form.name.value,
+        from_email: form.email.value,
+        message: form.message.value,
+        to_name: 'Victor Adoghe'
+      };
+
+      await emailjs.send(
+        'service_vzg04li', // Replace with your EmailJS service ID
+        'template_w8mdvvh', // Replace with your EmailJS template ID
+        templateParams
+      );
+
+      showMessage('success', true);
+      form.reset();
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      showMessage('error', true);
+    } finally {
+      showLoading(false);
+    }
   });
 }
 

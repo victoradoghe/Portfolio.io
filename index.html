@@ -34,6 +34,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+      (function() {
+        // Initialize EmailJS with your public key
+        emailjs.init("cGxRCB5m37rXeA-W7");
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -340,19 +347,30 @@
             <div class="grid">
               <label>
                 <span>Name</span>
-                <input name="name" type="text" required autocomplete="name" />
+                <input name="name" type="text" required autocomplete="name" minlength="2" />
+                <span class="error-message" aria-live="polite"></span>
               </label>
               <label>
                 <span>Email</span>
                 <input name="email" type="email" required autocomplete="email" />
+                <span class="error-message" aria-live="polite"></span>
               </label>
             </div>
             <label>
               <span>Message</span>
-              <textarea name="message" rows="5" required></textarea>
+              <textarea name="message" rows="5" required minlength="10"></textarea>
+              <span class="error-message" aria-live="polite"></span>
             </label>
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Send message</button>
+              <button type="submit" class="btn btn-primary">
+                <span class="btn-text">Send message</span>
+                <span class="btn-loader" hidden>
+                  <img src="assets/icons/loader.svg" alt="" width="20" height="20" aria-hidden="true">
+                  Sending...
+                </span>
+              </button>
+              <p class="form-message success" hidden aria-live="polite">Message sent successfully!</p>
+              <p class="form-message error" hidden aria-live="polite">Failed to send message. Please try again.</p>
               <p class="muted">Or email <a href="mailto:victoradoghe112@gmail.com">victoradoghe112@gmail.com</a></p>
             </div>
           </form>
