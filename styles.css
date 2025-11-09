@@ -310,7 +310,8 @@ h2 { font-size: var(--fs-800); margin: 0; }
 .timeline { list-style: none; margin: 0; padding: 0; border-left: 2px dashed var(--border); padding-left: 1.25rem; }
 .timeline-item { position: relative; margin-bottom: 1rem; }
 .timeline-dot { position: absolute; left: -10px; top: .6rem; width: 12px; height: 12px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in hsl, var(--accent), transparent 70%); }
-.timeline-header { width: 100%; text-align: left; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; padding: .75rem 1rem; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.timeline-header { width: 100%; text-align: left; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; padding: .75rem 1rem; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: .5rem; box-shadow: 3px 3px; transition: all 0.3s ease-in-out;}
+.timeline-header:hover{ transform: translateX(2px); box-shadow: 0 0 0 rgba(0,0,0,0);}
 .timeline-content { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: .75rem 1rem; margin-top: .5rem; }
 @media (max-width: 640px) {
   .timeline { padding-left: .9rem; }
@@ -330,7 +331,8 @@ h2 { font-size: var(--fs-800); margin: 0; }
 .chips { display: flex; gap: .4rem; }
 
 /* Contact */
-.contact-form { display: grid; gap: .75rem; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+.contact-form { display: grid; gap: .75rem; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; box-shadow: 5px 5px; transition: all 0.3s ease-in-out;}
+.contant-form:hover{ transform: translateX(3px); box-shadow: 0 0 0 rgba(0,0,0,0);}
 .contact-form .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
 @media (max-width: 640px) { .contact-form .grid { grid-template-columns: 1fr; } }
 label span { display: block; font-size: .9rem; color: var(--muted); margin-bottom: .35rem; }
