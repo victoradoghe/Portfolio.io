@@ -143,10 +143,53 @@ body {
 .icon-btn img { width: 18px; height: 18px; filter: var(--icon-filter); }
 .icon-btn[data-motion="reduced"] { background: color-mix(in hsl, var(--accent), transparent 80%); border-color: color-mix(in hsl, var(--accent), white 30%); }
 
+/* Theme toggle icons: show only the appropriate icon for current theme */
+.icon-sun, .icon-moon {
+  display: none; /* hidden by default; shown based on theme */
+  width: 18px;
+  height: 18px;
+}
+:root[data-theme="light"] .icon-sun {
+  display: inline-block;
+}
+:root[data-theme="light"] .icon-moon {
+  display: none;
+}
+:root[data-theme="dark"] .icon-moon {
+  display: inline-block;
+}
+:root[data-theme="dark"] .icon-sun {
+  display: none;
+}
+/* When in auto mode show both icons (indicates toggling available) */
+:root[data-theme="auto"] .icon-sun,
+:root[data-theme="auto"] .icon-moon {
+  display: inline-block;
+  opacity: 0.9;
+}
+
+/* Resolved theme overrides: when we expose the effective theme via
+   `data-resolved-theme` on the root, prefer those rules so the UI
+   (icons and other visuals) update immediately. These rules come
+   after the original theme rules so they win when both attributes
+   exist (e.g. `data-theme="auto"` + `data-resolved-theme="dark"`). */
+:root[data-resolved-theme="light"] .icon-sun {
+  display: inline-block !important;
+}
+:root[data-resolved-theme="light"] .icon-moon {
+  display: none !important;
+}
+:root[data-resolved-theme="dark"] .icon-moon {
+  display: inline-block !important;
+}
+:root[data-resolved-theme="dark"] .icon-sun {
+  display: none !important;
+}
+
 .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1rem; border-radius: 12px; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); box-shadow: var(--shadow); cursor: pointer; }
 .btn.small { padding: .5rem .8rem; font-size: .95rem; }
 .btn-primary { background: linear-gradient(180deg, color-mix(in hsl, var(--accent), white 15%), var(--accent)); color: white; border-color: transparent; }
-.btn-ghost { background: transparent; color: var(--texts); box-shadow: 3px 3px; transition: all 0.3s ease-in-out; background: var(--bg-elev); color: var(--text);}
+.btn-ghost { background: transparent; color: var(--texts); box-shadow: 3px 3px; transition: all 0.3s ease-in-out; color: var(--text); }
 .btn-ghost:hover { box-shadow: 0 0 0 rgba(0,0,0,0); transform: translateX(2px);}
 .chip { background: var(--bg-elev); border: 1px solid var(--border); color: var(--text); border-radius: 999px; padding: .4rem .8rem; cursor: pointer; }
 .chip.is-active { background: color-mix(in hsl, var(--accent), transparent 80%); border-color: color-mix(in hsl, var(--accent), white 30%); }

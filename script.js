@@ -14,18 +14,58 @@ const motionKey = 'va_motion';
 
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
+  // Set the resolved (effective) theme so UI can react immediately
+  // resolved = 'light' | 'dark' depending on user choice or OS preference
+  const resolved = resolveTheme(theme);
+  document.documentElement.setAttribute('data-resolved-theme', resolved);
   try { localStorage.setItem(themeKey, theme); } catch (_) {}
 }
 
 function initTheme() {
   const saved = localStorage.getItem(themeKey);
-  if (saved) applyTheme(saved);
+  const initial = saved || document.documentElement.getAttribute('data-theme') || 'auto';
+  applyTheme(initial);
+
+  // If the user has chosen `auto`, keep the resolved theme up-to-date with
+  // the OS preference so icons and visuals flip immediately when the
+  // system preference changes.
+  const mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+  if (mq) {
+    const update = (e) => {
+      if (document.documentElement.getAttribute('data-theme') === 'auto') {
+        document.documentElement.setAttribute('data-resolved-theme', e.matches ? 'dark' : 'light');
+      }
+    };
+    // Support both modern and older browsers
+    if (typeof mq.addEventListener === 'function') mq.addEventListener('change', update);
+    else if (typeof mq.addListener === 'function') mq.addListener(update);
+  }
+}
+
+// Determine effective theme (light/dark) from a logical theme value.
+function resolveTheme(theme) {
+  if (theme === 'auto') {
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  return theme;
 }
 
 function toggleTheme() {
   const root = document.documentElement;
   const current = root.getAttribute('data-theme') || 'auto';
-  const next = current === 'dark' ? 'light' : current === 'light' ? 'auto' : 'dark';
+  // Read the resolved theme (set by applyTheme) or compute it.
+  const resolved = root.getAttribute('data-resolved-theme') || resolveTheme(current);
+
+  // If currently in `auto` mode, toggle to the opposite of the
+  // resolved theme so the user sees an immediate flip with one click.
+  // Otherwise toggle between dark <-> light.
+  let next;
+  if (current === 'auto') {
+    next = resolved === 'dark' ? 'light' : 'dark';
+  } else {
+    next = current === 'dark' ? 'light' : 'dark';
+  }
+
   // Disable transitions for instant switch
   root.setAttribute('data-theme-switching', 'true');
   applyTheme(next);
