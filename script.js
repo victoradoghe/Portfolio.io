@@ -100,9 +100,21 @@ function initRoleRotator() {
   const roles = ['Junior Front‑end Engineer', 'Full‑stack Engineer'];
   let i = 0;
   setInterval(() => {
-    i = (i + 1) % roles.length;
-    el.textContent = roles[i];
-  }, 2600);
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-10px)';
+    el.style.filter = 'blur(4px)';
+    
+    setTimeout(() => {
+      i = (i + 1) % roles.length;
+      el.textContent = roles[i];
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+      el.style.filter = 'blur(0)';
+    }, 400);
+  }, 3000);
+  
+  // Initial styles for transition
+  el.style.transition = 'all 0.4s ease';
 }
 
 // CTA cursor-follow glow
@@ -430,6 +442,19 @@ function setYear() {
   if (el) el.textContent = new Date().getFullYear();
 }
 
+// Scroll reveal
+function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
 // Event bindings
 window.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -449,6 +474,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initNavToggle();
   setYear();
+  initReveal();
 });
 
 
