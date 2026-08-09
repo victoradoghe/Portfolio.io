@@ -3,498 +3,751 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Victor Adoghe — Portfolio</title>
-    <meta name="description" content="Victor Adoghe — Front-end / Full‑stack Developer portfolio. Projects, case studies, blog, and contact.">
-    <meta name="theme-color" content="#0b1220">
+    <title>Victor Adoghe — Front-end Engineer</title>
+    <meta name="description" content="Victor Adoghe is a front-end engineer building fast, accessible web interfaces with React, TypeScript and modern CSS. Selected work, case studies and contact.">
+    <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f2f1ec" media="(prefers-color-scheme: light)">
     <meta name="robots" content="index,follow">
-    <link rel="canonical" href="https://example.com/">
-    <link rel="icon" href="assets/favicon.svg">
+    <link rel="canonical" href="https://victoradoghe.github.io/Portfolio.io/">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
     <!-- Open Graph -->
-    <meta property="og:title" content="Victor Adoghe — Portfolio">
-    <meta property="og:description" content="Front-end / Full‑stack Developer portfolio. Projects, case studies, blog, and contact.">
+    <meta property="og:title" content="Victor Adoghe — Front-end Engineer">
+    <meta property="og:description" content="Building fast, accessible web interfaces with React, TypeScript and modern CSS.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="assets/og-image-template.svg">
-    <meta property="og:url" content="https://example.com/">
+    <meta property="og:url" content="https://victoradoghe.github.io/Portfolio.io/">
+    <meta property="og:image" content="https://victoradoghe.github.io/Portfolio.io/assets/og-image-template.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@D3vnox">
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Victor Adoghe",
-        "url": "https://example.com/",
-        "jobTitle": "Front-end / Full-stack Developer",
+        "url": "https://victoradoghe.github.io/Portfolio.io/",
+        "email": "mailto:victoradoghe112@gmail.com",
+        "jobTitle": "Front-end Engineer",
+        "knowsAbout": ["JavaScript", "TypeScript", "React", "Next.js", "CSS", "Web Accessibility"],
         "sameAs": [
-          "https://github.com/",
-          "https://www.linkedin.com/"
+          "https://github.com/victoradoghe",
+          "https://www.linkedin.com/in/victor-adoghe-6a482b388/",
+          "https://x.com/D3vnox"
         ]
       }
     </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-      (function() {
-        // Initialize EmailJS with your public key
-        emailjs.init("cGxRCB5m37rXeA-W7");
+    <script defer src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <!-- Set the theme before first paint so there is no light/dark flash -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('va_theme') || 'auto';
+          var resolved = t === 'auto'
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : t;
+          document.documentElement.setAttribute('data-theme', t);
+          document.documentElement.setAttribute('data-resolved-theme', resolved);
+          if (localStorage.getItem('va_motion') === 'reduce') {
+            document.documentElement.setAttribute('data-reduced-motion', 'reduce');
+          }
+        } catch (e) {}
       })();
     </script>
   </head>
+
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header" role="banner">
+
+    <!-- ================= Header ================= -->
+    <header class="site-header" id="siteHeader">
       <div class="container">
-        <a class="brand" href="#hero" aria-label="Home">Victor<span class="brand-accent">.</span></a>
-        <nav class="site-nav" aria-label="Primary">
-          <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
-            <img src="assets/icons/menu.svg" alt="Open menu" width="24" height="24">
-          </button>
-          <ul id="nav-menu" class="nav-menu">
-            <li><a href="#projects">Projects</a></li>
+        <a class="brand" href="#top" aria-label="Victor Adoghe — home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          Victor Adoghe
+        </a>
+
+        <nav aria-label="Primary">
+          <ul class="nav-menu">
+            <li><a href="#about">About</a></li>
+            <li><a href="#work">Work</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#experience">Experience</a></li>
-            <!-- <li><a href="#blog">Blog</a></li> -->
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
+
         <div class="header-actions">
-          <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode">
-            <img class="icon-sun" src="assets/icons/sun.svg" alt="Light" width="20" height="20">
-            <img class="icon-moon" src="assets/icons/moon.svg" alt="Dark" width="20" height="20">
+          <button id="themeToggle" class="icon-btn" type="button" aria-label="Switch to light theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M17.66 6.34l1.41-1.41M4.93 19.07l1.41-1.41"/>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+            </svg>
           </button>
-          <button id="motionToggle" class="icon-btn" aria-label="Toggle reduced motion">
-            <img src="assets/icons/sparkles.svg" alt="Motion" width="20" height="20">
+
+          <button id="motionToggle" class="icon-btn" type="button" aria-pressed="false" aria-label="Reduce motion">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.4L12 3z"/>
+              <path d="M18 16l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"/>
+            </svg>
           </button>
-          <a class="btn btn-ghost small" href="/assets/Frontend Developer.pdf" download="Frontend Developer.pdf" aria-label="Download resume (PDF)">Resume</a>
+
+          <a class="btn btn-sm" href="assets/Frontend%20Developer.pdf" download="Victor-Adoghe-CV.pdf">
+            Résumé
+          </a>
+
+          <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navOverlay" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
         </div>
       </div>
+      <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
     </header>
 
+    <!-- ================= Mobile navigation ================= -->
+    <div class="nav-overlay" id="navOverlay" hidden>
+      <div class="container">
+        <ol>
+          <li><a href="#about"><span>01</span> About</a></li>
+          <li><a href="#work"><span>02</span> Work</a></li>
+          <li><a href="#skills"><span>03</span> Skills</a></li>
+          <li><a href="#experience"><span>04</span> Experience</a></li>
+          <li><a href="#contact"><span>05</span> Contact</a></li>
+        </ol>
+        <div class="nav-overlay-foot">
+          <a href="assets/Frontend%20Developer.pdf" download="Victor-Adoghe-CV.pdf">Résumé</a>
+          <a href="https://github.com/victoradoghe" target="_blank" rel="noreferrer noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/victor-adoghe-6a482b388/" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+          <a href="mailto:victoradoghe112@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+
     <main id="main">
-      <!-- Hero -->
-      <section id="hero" class="hero" aria-labelledby="hero-title">
+      <!-- ================= Hero ================= -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="hero-bg" aria-hidden="true">
-          <canvas id="particleCanvas"></canvas>
-          <img class="hero-gradient" src="assets/hero-bg.svg" alt="" loading="eager" decoding="async">
+          <div class="hero-grid"></div>
+          <div class="hero-bloom"></div>
         </div>
+
         <div class="container hero-inner">
-          <div class="hero-content">
-            <h1 id="hero-title" class="hero-title">
-              Hi — I’m <span class="accent">Victor Adoghe</span>,
-              I build web apps humans enjoy.
-            </h1>
-            <p class="hero-subtitle">
-              <span id="roleRotator" class="rotator" aria-live="polite">Junior Front‑end Engineer</span>
-            </p>
-            <div class="hero-ctas">
-              <a href="#projects" class="btn btn-primary cta-glow" id="viewProjects">View Projects</a>
-              <a href="/assets/Frontend Developer.pdf" class="btn btn-ghost" download="Frontend Developer.pdf" aria-label="Download resume (PDF)">Download Resume</a>
-              <span class="cta-cursor-glow" aria-hidden="true"></span>
+          <p class="status">
+            <span class="status-dot" aria-hidden="true"></span>
+            Available for work
+          </p>
+
+          <h1 class="hero-title" id="hero-title">
+            <span class="line">
+              <span class="word" style="animation-delay:.05s">I</span>
+              <span class="word" style="animation-delay:.11s">build</span>
+              <span class="word" style="animation-delay:.17s">web</span>
+            </span>
+            <span class="line">
+              <span class="word" style="animation-delay:.23s">interfaces</span>
+            </span>
+            <span class="line">
+              <span class="word" style="animation-delay:.29s"><em>humans</em></span>
+              <span class="word" style="animation-delay:.35s">enjoy.</span>
+            </span>
+          </h1>
+
+          <p class="hero-meta">
+            <span class="rotator" id="roleRotator">Front-end Engineer</span>
+            <span class="sep" aria-hidden="true">/</span>
+            <!-- Swap this for your city if you'd rather show a location -->
+            <span>Remote worldwide</span>
+            <span class="sep" aria-hidden="true">/</span>
+            <span>React &amp; TypeScript</span>
+          </p>
+
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#work">
+              See the work
+              <svg class="arrow" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 8h11M9 4l4 4-4 4"/>
+              </svg>
+            </a>
+            <a class="btn" href="#contact">Get in touch</a>
+          </div>
+
+          <dl class="hero-stats">
+            <div>
+              <dt>Projects shipped</dt>
+              <dd>07</dd>
             </div>
+            <div>
+              <dt>Case studies</dt>
+              <dd>03</dd>
+            </div>
+            <div>
+              <dt>Building since</dt>
+              <dd>2023</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="scroll-cue" aria-hidden="true">
+          <span class="scroll-cue-line"></span>
+          Scroll
+        </div>
+      </section>
+
+      <!-- ================= Ticker ================= -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+          <div class="ticker-group">
+            <span>JavaScript</span><span>TypeScript</span><span>React</span><span>Next.js</span>
+            <span>Node.js</span><span>Tailwind CSS</span><span>Accessibility</span><span>Performance</span>
+          </div>
+          <div class="ticker-group">
+            <span>JavaScript</span><span>TypeScript</span><span>React</span><span>Next.js</span>
+            <span>Node.js</span><span>Tailwind CSS</span><span>Accessibility</span><span>Performance</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 01 About ================= -->
+      <section class="section" id="about" aria-labelledby="about-title">
+        <div class="container">
+          <div class="section-head" data-reveal>
+            <span class="eyebrow"><span class="eyebrow-num">01</span> About</span>
+            <span class="eyebrow-meta">Who you'd be working with</span>
+          </div>
+
+          <div class="about-grid">
+            <div class="about-body" data-reveal>
+              <h2 class="section-title" id="about-title">
+                I care about the <span class="accent">details</span> most people scroll past.
+              </h2>
+              <p style="margin-top:1.75rem">
+                I'm a self-taught front-end engineer. I build interfaces with React, TypeScript
+                and modern CSS — the kind that load quickly, work with a keyboard, and don't
+                fall apart on a mid-range phone.
+              </p>
+              <p>
+                Most of what you'll see below started as a question I wanted answered: how fast
+                can this get, how much of it can I make accessible by default, how little
+                JavaScript can it ship. I write the documentation too, because a project nobody
+                can pick up isn't finished.
+              </p>
+              <p>
+                Right now I'm taking on freelance front-end work and open to junior engineering roles.
+              </p>
+            </div>
+
+            <dl class="facts" data-reveal style="--reveal-delay:.1s">
+              <div class="fact">
+                <dt>Focus</dt>
+                <dd>Front-end engineering, UI systems</dd>
+              </div>
+              <div class="fact">
+                <dt>Stack</dt>
+                <dd>React, TypeScript, Next.js, Node</dd>
+              </div>
+              <div class="fact">
+                <dt>Cares about</dt>
+                <dd>Accessibility, performance, clear handoffs</dd>
+              </div>
+              <div class="fact">
+                <dt>Status</dt>
+                <dd>Available — freelance &amp; full-time</dd>
+              </div>
+              <div class="fact">
+                <dt>Email</dt>
+                <dd><a class="link" href="mailto:victoradoghe112@gmail.com">victoradoghe112@gmail.com</a></dd>
+              </div>
+            </dl>
           </div>
         </div>
       </section>
 
-      <!-- Skills -->
-      <section id="skills" class="section reveal" aria-labelledby="skills-title">
+      <!-- ================= 02 Selected work ================= -->
+      <section class="section" id="work" aria-labelledby="work-title">
         <div class="container">
-          <div class="section-head">
-            <h2 id="skills-title">Skills</h2>
-            <div class="section-actions">
-              <button id="skillsModeToggle" class="chip" aria-pressed="false">Switch to Cloud</button>
-            </div>
+          <div class="section-head" data-reveal>
+            <span class="eyebrow"><span class="eyebrow-num">02</span> Selected work</span>
+            <span class="eyebrow-meta" id="workCount">7 projects</span>
           </div>
-          <div class="skills-wrapper" data-mode="rings">
-            <div class="ring-grid" role="list">
-              <button class="skill-ring" role="listitem" aria-label="JavaScript 92%" data-skill="JavaScript" data-percent="92">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-bg" cx="60" cy="60" r="52" />
-                  <circle class="ring-progress" cx="60" cy="60" r="52" />
-                </svg>
-                <span class="skill-percent">92%</span>
-                <span class="skill-label">JavaScript<img src="assets/icons/javascript.svg" alt="" class="skill-icon" aria-hidden="true"></span>
-              </button>
-              <button class="skill-ring" aria-label="HTML 95%" data-skill="HTML" data-percent="95">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-bg" cx="60" cy="60" r="52" />
-                  <circle class="ring-progress" cx="60" cy="60" r="52" />
-                </svg>
-                <span class="skill-percent">95%</span>
-                <span class="skill-label">HTML<img src="assets/icons/html.svg" alt="" class="skill-icon" aria-hidden="true"></span>
-              </button>
-              <button class="skill-ring" aria-label="React 89%" data-skill="React" data-percent="89">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-bg" cx="60" cy="60" r="52" />
-                  <circle class="ring-progress" cx="60" cy="60" r="52" />
-                </svg>
-                <span class="skill-percent">89%</span>
-                <span class="skill-label">React<img src="assets/icons/react.svg" alt="" class="skill-icon" aria-hidden="true"></span>
-              </button>
-              <button class="skill-ring" aria-label="Node.js 88%" data-skill="Node.js" data-percent="88">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-bg" cx="60" cy="60" r="52" />
-                  <circle class="ring-progress" cx="60" cy="60" r="52" />
-                </svg>
-                <span class="skill-percent">88%</span>
-                <span class="skill-label">Node.js<img src="assets/icons/nodejs.svg" alt="" class="skill-icon" aria-hidden="true"></span>
-              </button>
-              <button class="skill-ring" aria-label="CSS 95%" data-skill="CSS" data-percent="95">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-bg" cx="60" cy="60" r="52" />
-                  <circle class="ring-progress" cx="60" cy="60" r="52" />
-                </svg>
-                <span class="skill-percent">95%</span>
-                <span class="skill-label">CSS<img src="assets/icons/css.svg" alt="" class="skill-icon" aria-hidden="true"></span>
-              </button>
-              <button class="skill-ring" aria-label="Accessibility 90%" data-skill="A11y" data-percent="90">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-bg" cx="60" cy="60" r="52" />
-                  <circle class="ring-progress" cx="60" cy="60" r="52" />
-                </svg>
-                <span class="skill-percent">90%</span>
-                <span class="skill-label">Accessibility<img src="assets/icons/accessibility.svg" alt="" class="skill-icon" aria-hidden="true"></span>
-              </button>
-              <button class="skill-ring" aria-label="Content Writing 98%" data-skill="Content Writing" data-percent="98">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-bg" cx="60" cy="60" r="52" />
-                  <circle class="ring-progress" cx="60" cy="60" r="52" />
-                </svg>
-                <span class="skill-percent">98%</span>
-                <span class="skill-label">Content Writing<img src="assets/icons/writing.svg" alt="" class="skill-icon" aria-hidden="true"></span>
-              </button>
-              <button class="skill-ring" aria-label="Python 87%" data-skill="Python" data-percent="87">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="ring-bg" cx="60" cy="60" r="52" />
-                  <circle class="ring-progress" cx="60" cy="60" r="52" />
-                </svg>
-                <span class="skill-percent">87%</span>
-                <span class="skill-label">Python<img src="assets/icons/python.svg" alt="" class="skill-icon" aria-hidden="true"></span>
-              </button>
-            </div>
-            <div class="skill-cloud" hidden>
-              <button class="cloud-item" data-weight="9">JavaScript</button>
-              <button class="cloud-item" data-weight="9">HTML</button>
-              <button class="cloud-item" data-weight="7">React</button>
-              <button class="cloud-item" data-weight="6">Node.js</button>
-              <button class="cloud-item" data-weight="9">CSS</button>
-              <button class="cloud-item" data-weight="7">Content Writing</button>
-              <button class="cloud-item" data-weight="5">Python</button>
-            </div>
-            <details class="skill-accessible">
-              <summary>Accessible skill list</summary>
-              <ul>
-                <li>
-                  <label for="skill-js">JavaScript</label>
-                  <progress id="skill-js" value="92" max="100">92%</progress>
-                </li>
-                <li>
-                  <label for="skill-html">HTML</label>
-                  <progress id="skill-html" value="95" max="100">95%</progress>
-                </li>
-                <li>
-                  <label for="skill-css">CSS</label>
-                  <progress id="skill-css" value="95" max="100">95%</progress>
-                </li>
-                <li>
-                  <label for="skill-writing">Content Writing</label>
-                  <progress id="skill-writing" value="98" max="100">98%</progress>
-                </li>
-                <li>
-                  <label for="skill-python">Python</label>
-                  <progress id="skill-python" value="87" max="100">87%</progress>
-                </li>
+
+          <h2 class="section-title" id="work-title" data-reveal>Things I've built and shipped.</h2>
+
+          <div class="filters" role="group" aria-label="Filter projects by type" style="margin:2rem 0 clamp(2rem,4vw,3rem)" data-reveal>
+            <button class="chip is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+            <button class="chip" type="button" data-filter="apps" aria-pressed="false">Apps</button>
+            <button class="chip" type="button" data-filter="tools" aria-pressed="false">Tools</button>
+            <button class="chip" type="button" data-filter="games" aria-pressed="false">Games</button>
+          </div>
+
+          <div class="work-grid" id="workGrid">
+            <!-- Featured -->
+            <article class="work-card is-featured" data-tags="apps" data-reveal>
+              <a class="work-media" href="https://optopia-eight.vercel.app/" target="_blank" rel="noreferrer noopener" tabindex="-1" aria-hidden="true">
+                <span class="work-num">01</span>
+                <img src="assets/img/Screenshot 2026-01-17 175559.png" alt="" loading="lazy" decoding="async" width="1200" height="750">
+              </a>
+              <div class="work-body">
+                <div class="work-head">
+                  <h3 class="work-title">Optopia</h3>
+                  <span class="work-year">Content platform</span>
+                </div>
+                <p class="work-desc">
+                  A high-performance content platform built around an optimised reading
+                  experience — fast first paint, comfortable measure, and curated digital resources.
+                </p>
+                <ul class="work-tech">
+                  <li>React</li><li>TypeScript</li><li>Tailwind CSS</li>
+                </ul>
+                <div class="work-links">
+                  <a href="https://optopia-eight.vercel.app/" target="_blank" rel="noreferrer noopener">
+                    Live site
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card" data-tags="tools" data-reveal>
+              <a class="work-media" href="https://dev-cheat-eight.vercel.app/" target="_blank" rel="noreferrer noopener" tabindex="-1" aria-hidden="true">
+                <span class="work-num">02</span>
+                <img src="assets/img/DevCheat.png" alt="" loading="lazy" decoding="async" width="1200" height="750">
+              </a>
+              <div class="work-body">
+                <div class="work-head">
+                  <h3 class="work-title">DevCheat</h3>
+                  <span class="work-year">Developer tool</span>
+                </div>
+                <p class="work-desc">
+                  A reference tool for curated syntax guides and programming tips, designed for
+                  fast lookup while you're mid-task.
+                </p>
+                <ul class="work-tech">
+                  <li>React</li><li>TypeScript</li><li>Tailwind CSS</li>
+                </ul>
+                <div class="work-links">
+                  <a href="https://dev-cheat-eight.vercel.app/" target="_blank" rel="noreferrer noopener">
+                    Live site
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card" data-tags="apps" data-reveal>
+              <a class="work-media" href="https://goodmorningtoall.com/" target="_blank" rel="noreferrer noopener" tabindex="-1" aria-hidden="true">
+                <span class="work-num">03</span>
+                <img src="assets/img/goodmorningtoall banner.png" alt="" loading="lazy" decoding="async" width="1200" height="750">
+              </a>
+              <div class="work-body">
+                <div class="work-head">
+                  <h3 class="work-title">Goodmorningtoall</h3>
+                  <span class="work-year">Live production site</span>
+                </div>
+                <p class="work-desc">
+                  A responsive content site serving good-morning messages and quotes, running on
+                  its own domain with server-rendered pages.
+                </p>
+                <ul class="work-tech">
+                  <li>Next.js</li><li>React</li><li>CSS</li>
+                </ul>
+                <div class="work-links">
+                  <a href="https://goodmorningtoall.com/" target="_blank" rel="noreferrer noopener">
+                    Live site
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card" data-tags="tools" data-reveal>
+              <a class="work-media" href="https://live-card-one.vercel.app/" target="_blank" rel="noreferrer noopener" tabindex="-1" aria-hidden="true">
+                <span class="work-num">04</span>
+                <img src="assets/img/Screenshot 2026-01-17 171200.png" alt="" loading="lazy" decoding="async" width="1200" height="750">
+              </a>
+              <div class="work-body">
+                <div class="work-head">
+                  <h3 class="work-title">LiveCard</h3>
+                  <span class="work-year">Generator</span>
+                </div>
+                <p class="work-desc">
+                  An interactive single-card generator with real-time customisation — every
+                  control updates the preview as you type.
+                </p>
+                <ul class="work-tech">
+                  <li>React</li><li>Tailwind CSS</li>
+                </ul>
+                <div class="work-links">
+                  <a href="https://live-card-one.vercel.app/" target="_blank" rel="noreferrer noopener">
+                    Live site
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                  <a class="is-ghost" href="https://github.com/victoradoghe/LiveCard" target="_blank" rel="noreferrer noopener">
+                    Code
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card" data-tags="apps" data-reveal>
+              <a class="work-media" href="case-studies/donemate.html" tabindex="-1" aria-hidden="true">
+                <span class="work-num">05</span>
+                <img src="assets/img/DoneMate.png" alt="" loading="lazy" decoding="async" width="1200" height="750">
+              </a>
+              <div class="work-body">
+                <div class="work-head">
+                  <h3 class="work-title">DoneMate</h3>
+                  <span class="work-year">Productivity app</span>
+                </div>
+                <p class="work-desc">
+                  A clean, interactive task manager built around getting out of your way —
+                  keyboard-friendly and persistent between sessions.
+                </p>
+                <ul class="work-tech">
+                  <li>React</li><li>CSS</li>
+                </ul>
+                <div class="work-links">
+                  <a href="case-studies/donemate.html">
+                    Case study
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4.5L12.5 8 9 11.5"/></svg>
+                  </a>
+                  <a class="is-ghost" href="https://github.com/victoradoghe/DoneMate.io" target="_blank" rel="noreferrer noopener">
+                    Code
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card" data-tags="games" data-reveal>
+              <a class="work-media" href="case-studies/tictactoe.html" tabindex="-1" aria-hidden="true">
+                <span class="work-num">06</span>
+                <img src="assets/img/TicTacToe canva real.png" alt="" loading="lazy" decoding="async" width="1200" height="750">
+              </a>
+              <div class="work-body">
+                <div class="work-head">
+                  <h3 class="work-title">TicTacToe Pro</h3>
+                  <span class="work-year">Game</span>
+                </div>
+                <p class="work-desc">
+                  A modern take on Tic Tac Toe with game state, win detection and a few features
+                  the paper version never had.
+                </p>
+                <ul class="work-tech">
+                  <li>React</li><li>CSS</li>
+                </ul>
+                <div class="work-links">
+                  <a href="case-studies/tictactoe.html">
+                    Case study
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4.5L12.5 8 9 11.5"/></svg>
+                  </a>
+                  <a class="is-ghost" href="https://github.com/victoradoghe/TicTacToe-Pro" target="_blank" rel="noreferrer noopener">
+                    Code
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card" data-tags="tools" data-reveal>
+              <a class="work-media" href="case-studies/calc.html" tabindex="-1" aria-hidden="true">
+                <span class="work-num">07</span>
+                <img src="assets/img/calc thumnail.png" alt="" loading="lazy" decoding="async" width="1200" height="750">
+              </a>
+              <div class="work-body">
+                <div class="work-head">
+                  <h3 class="work-title">Calc.</h3>
+                  <span class="work-year">Utility</span>
+                </div>
+                <p class="work-desc">
+                  A scientific calculator in React — arithmetic, trigonometry, logarithms and
+                  memory operations, with history you can scroll back through.
+                </p>
+                <ul class="work-tech">
+                  <li>React</li><li>Vite</li><li>CSS</li>
+                </ul>
+                <div class="work-links">
+                  <a href="case-studies/calc.html">
+                    Case study
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M9 4.5L12.5 8 9 11.5"/></svg>
+                  </a>
+                  <a class="is-ghost" href="https://github.com/victoradoghe/Calc." target="_blank" rel="noreferrer noopener">
+                    Code
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12"/></svg>
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <p class="work-empty" id="workEmpty" hidden>No projects in this category yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 03 Skills ================= -->
+      <section class="section" id="skills" aria-labelledby="skills-title">
+        <div class="container">
+          <div class="section-head" data-reveal>
+            <span class="eyebrow"><span class="eyebrow-num">03</span> Skills</span>
+            <span class="eyebrow-meta">What I reach for</span>
+          </div>
+
+          <h2 class="section-title" id="skills-title" data-reveal>The toolkit.</h2>
+
+          <div style="margin-top:clamp(2rem,4vw,3rem)">
+            <div class="skill-group" data-reveal>
+              <h3 class="skill-group-label"><span class="num">/01</span> Languages</h3>
+              <ul class="skill-tags">
+                <li>JavaScript</li><li>TypeScript</li><li>HTML</li><li>CSS</li><li>Python</li>
               </ul>
-            </details>
-          </div>
-        </div>
-      </section>
+            </div>
 
-      <!-- Projects -->
-      <section id="projects" class="section reveal" aria-labelledby="projects-title">
-        <div class="container">
-          <div class="section-head">
-            <h2 id="projects-title">Projects</h2>
-            <div class="filters" role="toolbar" aria-label="Project filters">
-              <button class="chip is-active" data-filter="all" aria-pressed="true">All</button>
-              <button class="chip" data-filter="frontend">Front‑end</button>
-              <button class="chip" data-filter="fullstack">Full‑stack</button>
-              <button class="chip" data-filter="ui">UI</button>
+            <div class="skill-group" data-reveal>
+              <h3 class="skill-group-label"><span class="num">/02</span> Frameworks</h3>
+              <ul class="skill-tags">
+                <li>React</li><li>Next.js</li><li>Node.js</li><li>Vite</li>
+              </ul>
+            </div>
+
+            <div class="skill-group" data-reveal>
+              <h3 class="skill-group-label"><span class="num">/03</span> Styling &amp; UI</h3>
+              <ul class="skill-tags">
+                <li>Tailwind CSS</li><li>Modern CSS</li><li>Responsive layout</li>
+                <li>Design systems</li><li>Figma handoff</li>
+              </ul>
+            </div>
+
+            <div class="skill-group" data-reveal>
+              <h3 class="skill-group-label"><span class="num">/04</span> Practices</h3>
+              <ul class="skill-tags">
+                <li>Accessibility (WCAG)</li><li>Web performance</li><li>Semantic HTML</li>
+                <li>Git &amp; GitHub</li><li>Technical writing</li>
+              </ul>
             </div>
           </div>
-          <div class="project-grid" role="list">
 
-
-            <article class="project-card" role="listitem" data-tags="frontend ui">
-              <img src="/assets/img/Screenshot 2026-01-17 175559.png" alt="DevCheat Display" loading="lazy">
-              <div class="card-body">
-                <h3>Optopia</h3>
-                <p class="muted">A high-performance content platform featuring optimized reading experiences and curated digital resources.</p>
-                <div class="tech-stack">
-                  <span class="tech-pill">React.js</span>
-                  <span class="tech-pill">Tailwind</span>
-                  <span class="tech-pill">TypeScript</span>
-                </div>
-              </div>
-              <div class="card-overlay">
-                <a class="btn btn-ghost" href="https://optopia-eight.vercel.app/" target="_blank" rel="noreferrer noopener" style="--i: 1">Visit</a>
-              </div>
-            </article>
-
-            <article class="project-card" role="listitem" data-tags="frontend ui">
-              <img src="./assets/img/DevCheat.png" alt="DevCheat Display" loading="lazy">
-              <div class="card-body">
-                <h3>DevCheat</h3>
-                <p class="muted">A modern reference tool featuring curated syntax guides and programming tips.</p>
-                <div class="tech-stack">
-                  <span class="tech-pill">React.js</span>
-                  <span class="tech-pill">Tailwind</span>
-                  <span class="tech-pill">TypeScript</span>
-                </div>
-              </div>
-              <div class="card-overlay">
-                <a class="btn btn-ghost" href="https://dev-cheat-eight.vercel.app/" target="_blank" rel="noreferrer noopener" style="--i: 1">Visit</a>
-              </div>
-            </article>
-
-            <article class="project-card" role="listitem" data-tags="frontend ui">
-              <img src="./assets/img/goodmorningtoall banner.png" alt="Goodmorningtoall Display" loading="lazy">
-              <div class="card-body">
-                <h3>Goodmorningtoall</h3>
-                <p class="muted">A responsive content site featuring good-morning messages and quotes.</p>
-                <div class="tech-stack">
-                  <span class="tech-pill">React.js</span>
-                  <span class="tech-pill">Css</span>
-                  <span class="tech-pill">Next.Js</span>
-                </div>
-              </div>
-              <div class="card-overlay">
-                <a class="btn btn-ghost" href="https://goodmorningtoall.com/" target="_blank" rel="noreferrer noopener" style="--i: 1">Visit</a>
-              </div>
-            </article>
-
-            
-
-            <article class="project-card" role="listitem" data-tags="frontend ui">
-              <img src="./assets/img/TicTacToe canva real.png" alt="TicTacToe Display" loading="lazy">
-              <div class="card-body">
-                <h3>TicTacToe</h3>
-                <p class="muted">A modern, interactive Tic Tac Toe game with advanced features.</p>
-                <div class="tech-stack">
-                  <span class="tech-pill">React.js</span>
-                  <span class="tech-pill">Css</span>
-                </div>
-              </div>
-              <div class="card-overlay">
-                <a class="btn btn-primary" href="./case-studies/tictactoe.html" style="--i: 1">View case study</a>
-                <a class="btn btn-ghost" href="https://github.com/victoradoghe/TicTacToe-Pro" target="_blank" rel="noreferrer noopener" style="--i: 2">GitHub</a>
-              </div>
-            </article>
-
-            <article class="project-card" role="listitem" data-tags="frontend ui">
-              <img src="/assets/img/Screenshot 2026-01-17 171200.png" alt="live-card Display" loading="lazy">
-              <div class="card-body">
-                <h3>LiveCard</h3>
-                <p class="muted">An interactive single-card generator for real-time customization.</p>
-                <div class="tech-stack">
-                  <span class="tech-pill">React.js</span>
-                  <span class="tech-pill">Tailwind</span>
-                </div>
-              </div>
-              <div class="card-overlay">
-                <a class="btn btn-primary" href="https://live-card-one.vercel.app/" style="--i: 1">Visit</a>
-                <a class="btn btn-ghost" href="https://github.com/victoradoghe/LiveCard" target="_blank" rel="noreferrer noopener" style="--i: 2">GitHub</a>
-              </div>
-            </article>
-
-            <article class="project-card" role="listitem" data-tags="frontend ui">
-              <img src="/assets/img/calc thumnail.png" alt="Calculator" loading="lazy">
-              <div class="card-body">
-                <h3>Calc.</h3>
-                <p class="muted">A React-based calculator for basic arithmetic operations.</p>
-                <div class="tech-stack">
-                  <span class="tech-pill">React.js</span>
-                  <span class="tech-pill">Css</span>
-                </div>
-              </div>
-              <div class="card-overlay">
-                <a href="./case-studies/calc.html" style="--i: 1"><button class="btn btn-primary" >View case study</button></a>
-                <a class="btn btn-ghost" href="https://github.com/victoradoghe/Calc." target="_blank" rel="noreferrer noopener" style="--i: 2">GitHub</a>
-              </div>
-            </article>
-
-            <article class="project-card" role="listitem" data-tags="frontend">
-              <img src="./assets/img/DoneMate.png" alt="Developer blog" loading="lazy">
-              <div class="card-body">
-                <h3>DoneMate</h3>
-                <p class="muted">A clean and interactive task manager built for productivity.</p>
-                <div class="tech-stack">
-                  <span class="tech-pill">React.js</span>
-                  <span class="tech-pill">Css</span>
-                </div>
-              </div>
-              <div class="card-overlay">
-                <a class="btn btn-primary" href="./case-studies/donemate.html" style="--i: 1">View case study</a>
-                <a class="btn btn-ghost" href="https://github.com/victoradoghe/DoneMate.io" target="_blank" rel="noreferrer noopener" style="--i: 2">GitHub</a>
-              </div>
-            </article>
-          </div>
+          <p class="skill-note" data-reveal>
+            No percentages — they'd be made up. Ask me about any of these and I'll show you the code.
+          </p>
         </div>
       </section>
 
-      <!-- Timeline / Experience -->
-      <section id="experience" class="section reveal" aria-labelledby="experience-title">
+      <!-- ================= 04 Experience ================= -->
+      <section class="section" id="experience" aria-labelledby="experience-title">
         <div class="container">
-          <h2 id="experience-title">Experience</h2>
-          <ol class="timeline">
-            <li class="timeline-item">
-              <div class="timeline-dot"></div>
-              <button class="timeline-header" aria-expanded="false">
-                <div>
-                  <strong>Self-taught</strong>
-                  <span class="muted"></span>
-                </div>
-                <span class="muted">1+ Years</span>
+          <div class="section-head" data-reveal>
+            <span class="eyebrow"><span class="eyebrow-num">04</span> Experience</span>
+            <span class="eyebrow-meta">How I got here</span>
+          </div>
+
+          <h2 class="section-title" id="experience-title" data-reveal>The route so far.</h2>
+
+          <ol class="timeline" style="margin-top:clamp(2rem,4vw,3rem)">
+            <li class="timeline-item" data-reveal>
+              <button class="timeline-header" type="button" aria-expanded="false" aria-controls="tl-1">
+                <span class="timeline-when">2023 — Present</span>
+                <span class="timeline-role">
+                  Freelance Front-end Projects
+                  <span class="timeline-org">Self-employed</span>
+                </span>
+                <span class="timeline-sign" aria-hidden="true"></span>
               </button>
-            </li>
-            <li class="timeline-item">
-              <div class="timeline-dot"></div>
-              <button class="timeline-header" aria-expanded="false">
+              <div class="timeline-content" id="tl-1">
                 <div>
-                  <strong>Freelance Front‑end Projects</strong>
-                  <span class="muted">Self‑employed</span>
+                  <ul>
+                    <li>Implemented responsive designs for clients, working from Figma to HTML, CSS, JavaScript and React.</li>
+                    <li>Built landing pages and reusable UI components, improving Lighthouse scores and accessibility along the way.</li>
+                    <li>Collaborated asynchronously with clear handoffs, changelogs and a readable Git history.</li>
+                  </ul>
                 </div>
-                <span class="muted">2023 — Present</span>
-              </button>
-              <div class="timeline-content" hidden>
-                <ul>
-                  <li>Edited and implemented responsive web designs for clients (Figma → HTML/CSS/JS/React.JS).</li>
-                  <li>Built small landing pages and UI components; improved Lighthouse scores and accessibility.</li>
-                  <li>Collaborated asynchronously with clear handoffs, changelogs, and Git history.</li>
-                </ul>
               </div>
             </li>
-            <li class="timeline-item">
-              <div class="timeline-dot"></div>
-              <button class="timeline-header" aria-expanded="false">
-                <div>
-                  <strong>Personal Projects & Learning</strong>
-                  <span class="muted">Portfolio development</span>
-                </div>
-                <span class="muted">Ongoing</span>
+
+            <li class="timeline-item" data-reveal>
+              <button class="timeline-header" type="button" aria-expanded="false" aria-controls="tl-2">
+                <span class="timeline-when">Ongoing</span>
+                <span class="timeline-role">
+                  Personal Projects &amp; Learning
+                  <span class="timeline-org">Portfolio development</span>
+                </span>
+                <span class="timeline-sign" aria-hidden="true"></span>
               </button>
-              <div class="timeline-content" hidden>
-                <ul>
-                  <li>Created and iterated on small web apps and UI experiments using React.JS.</li>
-                  <li>Practiced performance, accessibility, and semantic HTML fundamentals.</li>
-                  <li>Deployed projects and wrote concise documentation for maintainability.</li>
-                </ul>
+              <div class="timeline-content" id="tl-2">
+                <div>
+                  <ul>
+                    <li>Built and iterated on small web apps and UI experiments in React, shipping each one publicly.</li>
+                    <li>Practised performance, accessibility and semantic HTML fundamentals on every project.</li>
+                    <li>Deployed to Vercel and GitHub Pages, writing concise documentation for maintainability.</li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+
+            <li class="timeline-item" data-reveal>
+              <button class="timeline-header" type="button" aria-expanded="false" aria-controls="tl-3">
+                <span class="timeline-when">1+ years</span>
+                <span class="timeline-role">
+                  Self-taught Developer
+                  <span class="timeline-org">Independent study</span>
+                </span>
+                <span class="timeline-sign" aria-hidden="true"></span>
+              </button>
+              <div class="timeline-content" id="tl-3">
+                <div>
+                  <ul>
+                    <li>Learned front-end development through documentation, source code and building things that break.</li>
+                    <li>Moved from static pages to component architecture, state management and typed codebases.</li>
+                    <li>Write about what I learn — turning each project into a case study others can follow.</li>
+                  </ul>
+                </div>
               </div>
             </li>
           </ol>
         </div>
       </section>
 
-      <!-- Blog teaser -->
-      <!-- <section id="blog" class="section" aria-labelledby="blog-title">
+      <!-- ================= 05 Contact ================= -->
+      <section class="section" id="contact" aria-labelledby="contact-title">
         <div class="container">
-          <div class="section-head">
-            <h2 id="blog-title">Latest Articles</h2>
-            <a class="link" href="#">View all</a>
+          <div class="section-head" data-reveal>
+            <span class="eyebrow"><span class="eyebrow-num">05</span> Contact</span>
+            <span class="eyebrow-meta">Usually replies within a day</span>
           </div>
-          <div class="blog-grid" role="list">
-            <article class="blog-card" role="listitem">
-              <div class="chips"><span class="chip small">Performance</span></div>
-              <h3><a href="/articles/Performance.html">Hydration Myths: What Actually Blocks Paint?</a></h3>
-              <p class="muted">A practical deep dive into perceived vs real performance.</p>
-              <div class="meta"><img src="assets/icons/clock.svg" alt="" width="16" height="16"> 6 min read</div>
-            </article>
-            <article class="blog-card" role="listitem">
-              <div class="chips"><span class="chip small">Accessibility</span></div>
-              <h3><a href="/articles/Accessibility.html">Building Keyboard‑First UIs</a></h3>
-              <p class="muted">Patterns for focus, roving tabindex, and active states.</p>
-              <div class="meta"><img src="assets/icons/clock.svg" alt="" width="16" height="16"> 7 min read</div>
-            </article>
-            <article class="blog-card" role="listitem">
-              <div class="chips"><span class="chip small">CSS</span></div>
-              <h3><a href="/articles/Css.html">Modern Masonry Without Libraries</a></h3>
-              <p class="muted">Grid, columns, and container queries — when to use which.</p>
-              <div class="meta"><img src="assets/icons/clock.svg" alt="" width="16" height="16"> 5 min read</div>
-            </article>
-          </div>
-        </div>
-      </section> -->
 
-      <!-- Contact -->
-      <section id="contact" class="section reveal" aria-labelledby="contact-title">
-        <div class="container">
-          <h2 id="contact-title">Contact</h2>
-          <form id="contactForm" class="contact-form" novalidate>
-            <div class="grid">
-              <label>
-                <span>Name</span>
-                <input name="name" type="text" required autocomplete="name" minlength="2" />
-                <span class="error-message" aria-live="polite"></span>
-              </label>
-              <label>
-                <span>Email</span>
-                <input name="email" type="email" required autocomplete="email" />
-                <span class="error-message" aria-live="polite"></span>
-              </label>
-            </div>
-            <label>
-              <span>Message</span>
-              <textarea name="message" rows="5" required minlength="10"></textarea>
-              <span class="error-message" aria-live="polite"></span>
-            </label>
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">
-                <span class="btn-text">Send message</span>
-                <span class="btn-loader" hidden>
-                  <img src="assets/icons/loader.svg" alt="" width="20" height="20" aria-hidden="true">
-                  Sending...
-                </span>
+          <div class="contact-grid">
+            <div class="contact-side" data-reveal>
+              <h2 class="section-title" id="contact-title">
+                Got something you want built?
+              </h2>
+
+              <p class="muted" style="margin-top:1.5rem;max-width:42ch">
+                Freelance work, a junior role, or just a question about how something here
+                was made — all welcome.
+              </p>
+
+              <a class="contact-email" href="mailto:victoradoghe112@gmail.com" style="margin-top:2rem">
+                victoradoghe112@gmail.com
+              </a>
+              <br>
+              <button class="copy-btn" type="button" id="copyEmail" data-email="victoradoghe112@gmail.com">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="5.5" y="5.5" width="9" height="9" rx="1.5"/>
+                  <path d="M10.5 5.5v-2a1.5 1.5 0 0 0-1.5-1.5H3a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 3 11h2"/>
+                </svg>
+                Copy address
               </button>
-              <p class="form-message success" hidden aria-live="polite">Message sent successfully!</p>
-              <p class="form-message error" hidden aria-live="polite">Failed to send message. Please try again.</p>
-              <p class="muted">Or email <a href="mailto:victoradoghe112@gmail.com">victoradoghe112@gmail.com</a></p>
+
+              <dl class="facts">
+                <div class="fact">
+                  <dt>Availability</dt>
+                  <dd>Open to freelance &amp; full-time</dd>
+                </div>
+                <div class="fact">
+                  <dt>Elsewhere</dt>
+                  <dd>
+                    <a class="link" href="https://github.com/victoradoghe" target="_blank" rel="noreferrer noopener">GitHub</a> ·
+                    <a class="link" href="https://www.linkedin.com/in/victor-adoghe-6a482b388/" target="_blank" rel="noreferrer noopener">LinkedIn</a> ·
+                    <a class="link" href="https://x.com/D3vnox" target="_blank" rel="noreferrer noopener">X</a>
+                  </dd>
+                </div>
+              </dl>
             </div>
-          </form>
+
+            <form id="contactForm" class="contact-form" novalidate data-reveal style="--reveal-delay:.1s">
+              <label class="field">
+                <span>Your name</span>
+                <input name="name" type="text" required autocomplete="name" minlength="2"
+                       placeholder="Jane Doe" aria-describedby="err-name">
+                <span class="error-message" id="err-name" aria-live="polite"></span>
+              </label>
+
+              <label class="field">
+                <span>Email</span>
+                <input name="email" type="email" required autocomplete="email"
+                       placeholder="jane@company.com" aria-describedby="err-email">
+                <span class="error-message" id="err-email" aria-live="polite"></span>
+              </label>
+
+              <label class="field">
+                <span>Message</span>
+                <textarea name="message" rows="5" required minlength="10"
+                          placeholder="What are you working on?" aria-describedby="err-message"></textarea>
+                <span class="error-message" id="err-message" aria-live="polite"></span>
+              </label>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  <span class="btn-text">Send message</span>
+                  <span class="btn-loader" hidden>
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                      <path d="M8 1.5a6.5 6.5 0 1 0 6.5 6.5" />
+                    </svg>
+                    Sending
+                  </span>
+                </button>
+                <p class="form-message success" hidden aria-live="polite">Sent — I'll get back to you.</p>
+                <p class="form-message error" hidden aria-live="polite">Didn't send. Try email instead?</p>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
     </main>
 
+    <!-- ================= Footer ================= -->
     <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="socials">
-          <a class="icon-link" href="https://github.com/victoradoghe" target="_blank" rel="noreferrer noopener"><img src="assets/icons/github.svg" alt="GitHub" width="20" height="20"></a>
-          <a class="icon-link" href="https://x.com/D3vnox" target="_blank" rel="noreferrer noopener"><img src="assets/icons/twitter.svg" alt="X (Twitter)" width="20" height="20"></a>
-          <a class="icon-link" href="https://www.linkedin.com/in/victor-adoghe-6a482b388/" target="_blank" rel="noreferrer noopener"><img src="/assets/icons/linkedin.svg" alt="Linkedin" width="20" height="20"></a>
+      <div class="container">
+        <div class="footer-top">
+          <p class="footer-wordmark">Let's talk<span>.</span></p>
+          <div class="socials">
+            <a href="https://github.com/victoradoghe" target="_blank" rel="noreferrer noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2.13c-3.2.7-3.88-1.36-3.88-1.36-.53-1.36-1.29-1.72-1.29-1.72-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.41-1.27.74-1.56-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.79 1.08.79 2.18v3.23c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+              GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/victor-adoghe-6a482b388/" target="_blank" rel="noreferrer noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3V9zm7 0h3.8v1.65h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.5 4.76 5.76V21h-4v-5.7c0-1.36-.03-3.11-1.9-3.11-1.9 0-2.19 1.48-2.19 3.01V21h-4V9z"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://x.com/D3vnox" target="_blank" rel="noreferrer noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.22-6.82-5.96 6.82H1.68l7.73-8.84L1.25 2.25h6.82l4.71 6.23 5.46-6.23zm-1.16 17.52h1.83L7.03 4.13H5.06l12.02 15.64z"/></svg>
+              X
+            </a>
+            <a href="mailto:victoradoghe112@gmail.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6 9-6"/></svg>
+              Email
+            </a>
+          </div>
         </div>
-        <p class="muted">© <span id="year"></span> Victor Adoghe — Portfolio</p>
+
+        <div class="footer-bottom">
+          <p>© <span id="year"></span> Victor Adoghe — Built from scratch, no framework.</p>
+          <button class="to-top" type="button" id="toTop">
+            Back to top
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"/></svg>
+          </button>
+        </div>
       </div>
     </footer>
 
-    <!-- Case Study Modal -->
-    <div id="caseStudyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
-      <div class="modal-backdrop" data-close></div>
-      <div class="modal-dialog" role="document" aria-describedby="modal-desc">
-        <header class="modal-header">
-          <h3 id="modal-title">Case Study</h3>
-          <button class="icon-btn" data-close aria-label="Close">
-            <img src="assets/icons/close.svg" alt="Close" width="20" height="20">
-          </button>
-        </header>
-        <div class="modal-content" id="modal-desc">
-          <p class="muted">Loading…</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Toasts -->
-    <div id="toastContainer" aria-live="polite" aria-atomic="true" class="toast-container"></div>
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
   </body>
 </html>
-
-

@@ -1,480 +1,490 @@
-// Victor Adoghe — Portfolio Interactions
+/* ==========================================================================
+   Victor Adoghe — Portfolio interactions
+   No dependencies except EmailJS (loaded from CDN for the contact form).
+   ========================================================================== */
 
-const state = {
-  reducedMotion: false,
-};
+const THEME_KEY = 'va_theme';
+const MOTION_KEY = 'va_motion';
 
-// Utility: prefers-reduced-motion
+const root = document.documentElement;
+const state = { reducedMotion: false };
+
 const prefersReducedMotion = () =>
-  window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Theme handling
-const themeKey = 'va_theme';
-const motionKey = 'va_motion';
+/* Motion is off when the OS asks for it OR the visitor flipped the toggle. */
+const motionIsOff = () => state.reducedMotion || prefersReducedMotion();
+
+/* --------------------------------------------------------------------------
+   Theme
+   -------------------------------------------------------------------------- */
+
+function resolveTheme(theme) {
+  if (theme !== 'auto') return theme;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
 
 function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  // Set the resolved (effective) theme so UI can react immediately
-  // resolved = 'light' | 'dark' depending on user choice or OS preference
   const resolved = resolveTheme(theme);
-  document.documentElement.setAttribute('data-resolved-theme', resolved);
-  try { localStorage.setItem(themeKey, theme); } catch (_) {}
+  root.setAttribute('data-theme', theme);
+  root.setAttribute('data-resolved-theme', resolved);
+
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    toggle.setAttribute(
+      'aria-label',
+      resolved === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+    );
+  }
+
+  try { localStorage.setItem(THEME_KEY, theme); } catch (_) {}
 }
 
 function initTheme() {
-  const saved = localStorage.getItem(themeKey);
-  const initial = saved || document.documentElement.getAttribute('data-theme') || 'auto';
-  applyTheme(initial);
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch (_) {}
+  applyTheme(saved || 'auto');
 
-  // If the user has chosen `auto`, keep the resolved theme up-to-date with
-  // the OS preference so icons and visuals flip immediately when the
-  // system preference changes.
-  const mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-  if (mq) {
-    const update = (e) => {
-      if (document.documentElement.getAttribute('data-theme') === 'auto') {
-        document.documentElement.setAttribute('data-resolved-theme', e.matches ? 'dark' : 'light');
-      }
-    };
-    // Support both modern and older browsers
-    if (typeof mq.addEventListener === 'function') mq.addEventListener('change', update);
-    else if (typeof mq.addListener === 'function') mq.addListener(update);
-  }
-}
+  // Keep `auto` in sync when the OS preference changes mid-session.
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (root.getAttribute('data-theme') === 'auto') applyTheme('auto');
+  });
 
-// Determine effective theme (light/dark) from a logical theme value.
-function resolveTheme(theme) {
-  if (theme === 'auto') {
-    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-  }
-  return theme;
-}
-
-function toggleTheme() {
-  const root = document.documentElement;
-  const current = root.getAttribute('data-theme') || 'auto';
-  // Read the resolved theme (set by applyTheme) or compute it.
-  const resolved = root.getAttribute('data-resolved-theme') || resolveTheme(current);
-
-  // If currently in `auto` mode, toggle to the opposite of the
-  // resolved theme so the user sees an immediate flip with one click.
-  // Otherwise toggle between dark <-> light.
-  let next;
-  if (current === 'auto') {
-    next = resolved === 'dark' ? 'light' : 'dark';
-  } else {
-    next = current === 'dark' ? 'light' : 'dark';
-  }
-
-  // Disable transitions for instant switch
-  root.setAttribute('data-theme-switching', 'true');
-  applyTheme(next);
-  // Re-enable after paint
-  requestAnimationFrame(() => {
-    root.removeAttribute('data-theme-switching');
+  document.getElementById('themeToggle')?.addEventListener('click', () => {
+    const resolved = root.getAttribute('data-resolved-theme') || 'dark';
+    root.setAttribute('data-theme-switching', 'true');
+    applyTheme(resolved === 'dark' ? 'light' : 'dark');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => root.removeAttribute('data-theme-switching'));
+    });
   });
 }
 
-// Motion toggle
-function applyMotionPref(value) {
-  state.reducedMotion = value;
-  document.documentElement.setAttribute('data-reduced-motion', value ? 'reduce' : 'auto');
-  // Update visual state of motion toggle button
-  const motionToggle = document.getElementById('motionToggle');
-  if (motionToggle) {
-    motionToggle.setAttribute('data-motion', value ? 'reduced' : 'normal');
+/* --------------------------------------------------------------------------
+   Motion preference
+   -------------------------------------------------------------------------- */
+
+function applyMotion(reduced) {
+  state.reducedMotion = reduced;
+  root.setAttribute('data-reduced-motion', reduced ? 'reduce' : 'auto');
+
+  const btn = document.getElementById('motionToggle');
+  if (btn) {
+    btn.setAttribute('aria-pressed', String(reduced));
+    btn.setAttribute('data-motion', reduced ? 'reduced' : 'normal');
+    btn.setAttribute('aria-label', reduced ? 'Enable animations' : 'Reduce motion');
   }
-  try { localStorage.setItem(motionKey, value ? 'reduce' : 'auto'); } catch (_) {}
+
+  try { localStorage.setItem(MOTION_KEY, reduced ? 'reduce' : 'auto'); } catch (_) {}
 }
 
 function initMotion() {
-  const saved = localStorage.getItem(motionKey);
-  if (saved) applyMotionPref(saved === 'reduce');
-  else applyMotionPref(prefersReducedMotion());
+  let saved = null;
+  try { saved = localStorage.getItem(MOTION_KEY); } catch (_) {}
+  applyMotion(saved ? saved === 'reduce' : prefersReducedMotion());
+
+  document.getElementById('motionToggle')?.addEventListener('click', () => {
+    applyMotion(!state.reducedMotion);
+    toast(state.reducedMotion ? 'Motion reduced' : 'Motion on');
+  });
 }
 
-// Hero role rotator
+/* --------------------------------------------------------------------------
+   Header: scroll progress + condensed state
+   -------------------------------------------------------------------------- */
+
+function initHeaderScroll() {
+  const header = document.getElementById('siteHeader');
+  const progress = document.getElementById('scrollProgress');
+  let ticking = false;
+
+  function update() {
+    const y = window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+
+    header?.classList.toggle('is-stuck', y > 8);
+    if (progress) {
+      progress.style.setProperty('--progress', max > 0 ? String(y / max) : '0');
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }, { passive: true });
+
+  update();
+}
+
+/* --------------------------------------------------------------------------
+   Mobile navigation overlay
+   -------------------------------------------------------------------------- */
+
+function initNav() {
+  const toggle = document.getElementById('navToggle');
+  const overlay = document.getElementById('navOverlay');
+  if (!toggle || !overlay) return;
+
+  // The `hidden` attribute is only there for the no-JS/no-CSS case; from here
+  // on, visibility is driven by the `is-open` class so it can transition.
+  overlay.hidden = false;
+
+  const links = overlay.querySelectorAll('a');
+
+  function setOpen(open) {
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    overlay.classList.toggle('is-open', open);
+    document.body.classList.toggle('is-locked', open);
+    if (open) {
+      links[0]?.focus({ preventScroll: true });
+    } else {
+      toggle.focus({ preventScroll: true });
+    }
+  }
+
+  toggle.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  links.forEach((link) => link.addEventListener('click', () => setOpen(false)));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) setOpen(false);
+  });
+
+  // Bail out of the overlay if the viewport grows past the mobile breakpoint.
+  window.matchMedia('(min-width: 881px)').addEventListener('change', (e) => {
+    if (e.matches && overlay.classList.contains('is-open')) setOpen(false);
+  });
+}
+
+/* --------------------------------------------------------------------------
+   Scroll spy — highlights the section you are reading
+   -------------------------------------------------------------------------- */
+
+function initScrollSpy() {
+  const links = [...document.querySelectorAll('.nav-menu a[href^="#"]')];
+  const sections = links
+    .map((link) => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+  if (!sections.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      links.forEach((link) => {
+        const isCurrent = link.getAttribute('href') === `#${entry.target.id}`;
+        if (isCurrent) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+
+  sections.forEach((section) => observer.observe(section));
+}
+
+/* --------------------------------------------------------------------------
+   Scroll reveal
+   -------------------------------------------------------------------------- */
+
+function initReveal() {
+  const items = [...document.querySelectorAll('[data-reveal]')];
+  if (!items.length) return;
+
+  if (motionIsOff() || !('IntersectionObserver' in window)) {
+    items.forEach((el) => el.classList.add('is-revealed'));
+    return;
+  }
+
+  // Stagger cards that share a grid so they cascade rather than pop together.
+  document.querySelectorAll('.work-grid > [data-reveal]').forEach((card, i) => {
+    card.style.setProperty('--reveal-delay', `${Math.min(i, 4) * 0.07}s`);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-revealed');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  items.forEach((el) => observer.observe(el));
+}
+
+/* --------------------------------------------------------------------------
+   Hero role rotator
+   -------------------------------------------------------------------------- */
+
 function initRoleRotator() {
   const el = document.getElementById('roleRotator');
   if (!el) return;
-  const roles = ['Junior Front‑end Engineer', 'Full‑stack Engineer'];
+
+  const roles = ['Front-end Engineer', 'React Developer', 'UI Engineer'];
   let i = 0;
+
+  if (motionIsOff()) return;
+
   setInterval(() => {
     el.style.opacity = '0';
-    el.style.transform = 'translateY(-10px)';
-    el.style.filter = 'blur(4px)';
-    
+    el.style.transform = 'translateY(-6px)';
+
     setTimeout(() => {
       i = (i + 1) % roles.length;
       el.textContent = roles[i];
       el.style.opacity = '1';
       el.style.transform = 'translateY(0)';
-      el.style.filter = 'blur(0)';
-    }, 400);
-  }, 3000);
-  
-  // Initial styles for transition
-  el.style.transition = 'all 0.4s ease';
+    }, 320);
+  }, 3400);
 }
 
-// CTA cursor-follow glow
-function initCtaGlow() {
-  const wrapper = document.querySelector('.hero-ctas');
-  if (!wrapper) return;
-  wrapper.addEventListener('pointermove', (e) => {
-    const rect = wrapper.getBoundingClientRect();
-    const mx = ((e.clientX - rect.left) / rect.width) * 100 + '%';
-    const my = ((e.clientY - rect.top) / rect.height) * 100 + '%';
-    wrapper.style.setProperty('--mx', mx);
-    wrapper.style.setProperty('--my', my);
-  });
-}
+/* --------------------------------------------------------------------------
+   Project filters
+   -------------------------------------------------------------------------- */
 
-// Smooth scroll for anchor links
-function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach((a) => {
-    a.addEventListener('click', (e) => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-}
-
-// Particle background
-function initParticles() {
-  const canvas = document.getElementById('particleCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let dpr = Math.min(2, window.devicePixelRatio || 1);
-  let rafId;
-  const particles = Array.from({ length: 80 }, () => ({
-    x: Math.random(), y: Math.random(), vx: (Math.random() - .5) * .002, vy: (Math.random() - .5) * .002, r: Math.random() * 3 + 2,
-  }));
-
-  function resize() {
-    canvas.width = canvas.clientWidth * dpr;
-    canvas.height = canvas.clientHeight * dpr;
-    // Recalculate particle positions after resize to keep them visible
-    particles.forEach(p => {
-      if (p.x > 1) p.x = Math.random();
-      if (p.y > 1) p.y = Math.random();
-    });
-  }
-  const onResize = () => { 
-    resize(); 
-    // Restart animation after resize
-    if (rafId) cancelAnimationFrame(rafId);
-    step();
-  };
-  window.addEventListener('resize', onResize);
-  resize();
-
-  function step() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(122,92,255,0.95)';
-    particles.forEach((p) => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > 1) p.vx *= -1;
-      if (p.y < 0 || p.y > 1) p.vy *= -1;
-      ctx.beginPath();
-      ctx.arc(p.x * canvas.width, p.y * canvas.height, p.r * dpr, 0, Math.PI * 2);
-      ctx.fill();
-    });
-    rafId = requestAnimationFrame(step);
-  }
-  step();
-
-  // Simple motion detection - only stop if user explicitly prefers reduced motion
-  const obs = new MutationObserver(() => {
-    if (document.documentElement.getAttribute('data-reduced-motion') === 'reduce') {
-      if (rafId) cancelAnimationFrame(rafId);
-    } else if (!rafId) {
-      step();
-    }
-  });
-  obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-reduced-motion'] });
-
-  // Additional resize observer for better responsiveness
-  const resizeObserver = new ResizeObserver(() => {
-    resize();
-    if (rafId) cancelAnimationFrame(rafId);
-    step();
-  });
-  resizeObserver.observe(canvas);
-}
-
-// Skills rings
-function initSkillRings() {
-  const rings = document.querySelectorAll('.skill-ring');
-  rings.forEach((ring) => {
-    const percent = Number(ring.getAttribute('data-percent')) || 0;
-    const progress = ring.querySelector('.ring-progress');
-    const circumference = 2 * Math.PI * 52; // r=52
-    const offset = circumference * (1 - percent / 100);
-    progress.style.strokeDasharray = String(circumference);
-    progress.style.strokeDashoffset = String(offset);
-    ring.title = `${ring.getAttribute('data-skill')} — ${percent}%`;
-    let label = ring.querySelector('.skill-percent');
-    if (!label) {
-      label = document.createElement('span');
-      label.className = 'skill-percent';
-      ring.insertBefore(label, ring.querySelector('.skill-label'));
-    }
-    label.textContent = `${percent}%`;
-  });
-}
-
-// Skills mode toggle: rings <-> cloud
-function initSkillsModeToggle() {
-  const toggle = document.getElementById('skillsModeToggle');
-  const wrapper = document.querySelector('.skills-wrapper');
-  const grid = document.querySelector('.ring-grid');
-  const cloud = document.querySelector('.skill-cloud');
-  if (!toggle || !wrapper || !grid || !cloud) return;
-  
-  toggle.addEventListener('click', () => {
-    // Check which view is currently visible
-    const isRingsVisible = !grid.hidden;
-    console.log('Current state:', { isRingsVisible, gridHidden: grid.hidden, cloudHidden: cloud.hidden });
-    
-    if (isRingsVisible) {
-      // Switch to cloud
-      console.log('Switching to cloud');
-      grid.hidden = true; 
-      cloud.hidden = false; 
-      wrapper.setAttribute('data-mode', 'cloud');
-      toggle.textContent = 'Switch to Rings';
-      // rearrange cloud by weight
-      [...cloud.querySelectorAll('.cloud-item')]
-        .sort((a,b) => Number(b.dataset.weight) - Number(a.dataset.weight))
-        .forEach((el, idx) => {
-          el.style.gridColumn = `span ${Math.max(2, 6 - Math.floor(idx/3))}`;
-        });
-    } else {
-      // Switch to rings
-      console.log('Switching to rings');
-      cloud.hidden = true; 
-      grid.hidden = false; 
-      wrapper.setAttribute('data-mode', 'rings');
-      toggle.textContent = 'Switch to Cloud';
-    }
-    console.log('After switch:', { gridHidden: grid.hidden, cloudHidden: cloud.hidden });
-  });
-}
-
-// Project filters
 function initProjectFilters() {
-  const chips = document.querySelectorAll('.filters .chip');
-  const cards = document.querySelectorAll('.project-card');
-  chips.forEach((chip) => chip.addEventListener('click', () => {
-    chips.forEach((c) => { c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false'); });
-    chip.classList.add('is-active'); chip.setAttribute('aria-pressed', 'true');
-    const tag = chip.dataset.filter;
-    cards.forEach((card) => {
-      const tags = (card.getAttribute('data-tags') || '').split(/\s+/);
-      const show = tag === 'all' || tags.includes(tag);
-      card.style.display = show ? '' : 'none';
+  const chips = [...document.querySelectorAll('.filters .chip')];
+  const cards = [...document.querySelectorAll('.work-card')];
+  const count = document.getElementById('workCount');
+  const empty = document.getElementById('workEmpty');
+  if (!chips.length || !cards.length) return;
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+
+      chips.forEach((c) => {
+        const active = c === chip;
+        c.classList.toggle('is-active', active);
+        c.setAttribute('aria-pressed', String(active));
+      });
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const tags = (card.dataset.tags || '').split(/\s+/);
+        const show = filter === 'all' || tags.includes(filter);
+        card.hidden = !show;
+        if (show) {
+          visible += 1;
+          // Restart the entrance animation so filtered results feel deliberate.
+          if (!motionIsOff()) {
+            card.classList.remove('is-filtering');
+            void card.offsetWidth; // force reflow so the animation replays
+            card.classList.add('is-filtering');
+          }
+        }
+      });
+
+      if (count) count.textContent = `${visible} project${visible === 1 ? '' : 's'}`;
+      if (empty) empty.hidden = visible > 0;
     });
-  }));
+  });
 }
 
-// Timeline toggles
+/* --------------------------------------------------------------------------
+   Experience accordion
+   -------------------------------------------------------------------------- */
+
 function initTimeline() {
   document.querySelectorAll('.timeline-header').forEach((btn) => {
-    const content = btn.parentElement.querySelector('.timeline-content');
+    const panel = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!panel) return; // no panel to expand — leave the row static
+
     btn.addEventListener('click', () => {
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!expanded));
-      content.hidden = expanded;
+      panel.classList.toggle('is-open', !expanded);
     });
   });
 }
 
-// Modal
-function initModal() {
-  const modal = document.getElementById('caseStudyModal');
-  if (!modal) return;
-  const dialog = modal.querySelector('.modal-dialog');
-  const content = modal.querySelector('.modal-content');
-  function open(html) {
-    content.innerHTML = html || '<p class="muted">Loading…</p>';
-    modal.hidden = false;
-    dialog.focus();
-    document.body.style.overflow = 'hidden';
-  }
-  function close() {
-    modal.hidden = true; document.body.style.overflow = '';
-  }
-  modal.addEventListener('click', (e) => {
-    const target = e.target;
-    if (target.matches('[data-close]') || target.closest('[data-close]') || target === modal) close();
-  });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) close(); });
-  document.querySelectorAll('[data-open-modal]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const key = btn.getAttribute('data-project');
-      open('<p class="muted">Loading…</p>');
+/* --------------------------------------------------------------------------
+   Copy email
+   -------------------------------------------------------------------------- */
+
+function initCopyEmail() {
+  const btn = document.getElementById('copyEmail');
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    const email = btn.dataset.email || '';
+    try {
+      await navigator.clipboard.writeText(email);
+      toast('Email copied');
+    } catch (_) {
+      // Clipboard API needs a secure context; fall back to a hidden field.
+      const field = document.createElement('textarea');
+      field.value = email;
+      field.setAttribute('readonly', '');
+      field.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+      document.body.appendChild(field);
+      field.select();
       try {
-        const res = await fetch(`case-studies/${key}.html`);
-        const html = await res.text();
-        open(html);
-      } catch (e) {
-        open('<p>Failed to load. <a href="#">Open in new page</a></p>');
+        document.execCommand('copy');
+        toast('Email copied');
+      } catch (__) {
+        toast('Copy failed — select it manually');
       }
-    });
+      field.remove();
+    }
   });
 }
 
-// Contact form with EmailJS
+/* --------------------------------------------------------------------------
+   Contact form (EmailJS)
+   -------------------------------------------------------------------------- */
+
+const EMAILJS = {
+  publicKey: 'cGxRCB5m37rXeA-W7',
+  serviceId: 'service_vzg04li',
+  templateId: 'template_w8mdvvh',
+};
+
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
+
+  if (typeof emailjs !== 'undefined') {
+    try { emailjs.init(EMAILJS.publicKey); } catch (_) {}
+  }
 
   const submitBtn = form.querySelector('button[type="submit"]');
   const btnText = submitBtn.querySelector('.btn-text');
   const btnLoader = submitBtn.querySelector('.btn-loader');
   const successMsg = form.querySelector('.form-message.success');
   const errorMsg = form.querySelector('.form-message.error');
+  const fields = [...form.querySelectorAll('input, textarea')];
 
-  function showLoading(isLoading) {
-    btnText.hidden = isLoading;
-    btnLoader.hidden = !isLoading;
-    submitBtn.disabled = isLoading;
+  const labelFor = (input) =>
+    input.closest('.field')?.querySelector('span')?.textContent.trim() || input.name;
+
+  function messageFor(input) {
+    if (input.validity.valid) return '';
+    if (input.validity.valueMissing) return `${labelFor(input)} is required.`;
+    if (input.validity.typeMismatch && input.type === 'email') return 'That email address looks incomplete.';
+    if (input.validity.tooShort) return `${labelFor(input)} needs at least ${input.minLength} characters.`;
+    return 'Please check this field.';
   }
 
-  function showMessage(type, show = true) {
-    successMsg.hidden = type !== 'success' || !show;
-    errorMsg.hidden = type !== 'error' || !show;
-    if (show) {
-      const msgEl = type === 'success' ? successMsg : errorMsg;
-      msgEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+  function validateField(input) {
+    const target = document.getElementById(input.getAttribute('aria-describedby'));
+    const message = messageFor(input);
+    if (target) target.textContent = message;
+    input.setAttribute('aria-invalid', String(Boolean(message)));
+    return !message;
   }
 
-  function validateForm() {
-    const inputs = form.querySelectorAll('input, textarea');
-    let isValid = true;
-
-    inputs.forEach(input => {
-      const errorElement = input.parentElement.querySelector('.error-message');
-      errorElement.textContent = '';
-
-      if (!input.checkValidity()) {
-        isValid = false;
-        if (input.validity.valueMissing) {
-          errorElement.textContent = `${input.name} is required`;
-        } else if (input.validity.typeMismatch && input.type === 'email') {
-          errorElement.textContent = 'Please enter a valid email address';
-        } else if (input.validity.tooShort) {
-          errorElement.textContent = `${input.name} must be at least ${input.minLength} characters`;
-        }
-      }
+  // Only nag after the visitor has already left a field once.
+  fields.forEach((input) => {
+    input.addEventListener('blur', () => validateField(input));
+    input.addEventListener('input', () => {
+      if (input.getAttribute('aria-invalid') === 'true') validateField(input);
     });
+  });
 
-    return isValid;
+  function setLoading(loading) {
+    btnText.hidden = loading;
+    btnLoader.hidden = !loading;
+    submitBtn.disabled = loading;
   }
 
-  form.addEventListener('submit', async function(e) {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    showMessage('success', false);
-    showMessage('error', false);
+    successMsg.hidden = true;
+    errorMsg.hidden = true;
 
-    if (!validateForm()) {
+    const results = fields.map(validateField);
+    if (results.includes(false)) {
+      form.querySelector('[aria-invalid="true"]')?.focus();
       return;
     }
 
-    showLoading(true);
+    if (typeof emailjs === 'undefined') {
+      errorMsg.hidden = false;
+      return;
+    }
 
+    setLoading(true);
     try {
-      const templateParams = {
-        from_name: form.name.value,
-        from_email: form.email.value,
-        message: form.message.value,
-        to_name: 'Victor Adoghe'
-      };
-
-      await emailjs.send(
-        'service_vzg04li', // Replace with your EmailJS service ID
-        'template_w8mdvvh', // Replace with your EmailJS template ID
-        templateParams
-      );
-
-      showMessage('success', true);
+      // Read through `form.elements` — `form.name` resolves to the form's own
+      // name attribute, not the input called "name".
+      await emailjs.send(EMAILJS.serviceId, EMAILJS.templateId, {
+        from_name: form.elements.namedItem('name').value,
+        from_email: form.elements.namedItem('email').value,
+        message: form.elements.namedItem('message').value,
+        to_name: 'Victor Adoghe',
+      });
+      successMsg.hidden = false;
       form.reset();
-    } catch (error) {
-      console.error('Failed to send email:', error);
-      showMessage('error', true);
+      fields.forEach((input) => {
+        input.removeAttribute('aria-invalid');
+        const target = document.getElementById(input.getAttribute('aria-describedby'));
+        if (target) target.textContent = '';
+      });
+      toast('Message sent');
+    } catch (err) {
+      console.error('EmailJS send failed:', err);
+      errorMsg.hidden = false;
     } finally {
-      showLoading(false);
+      setLoading(false);
     }
   });
 }
 
+/* --------------------------------------------------------------------------
+   Toasts
+   -------------------------------------------------------------------------- */
+
 function toast(message) {
   const container = document.getElementById('toastContainer');
+  if (!container) return;
+
   const el = document.createElement('div');
   el.className = 'toast';
   el.textContent = message;
   container.appendChild(el);
+
   setTimeout(() => {
-    el.style.opacity = '0';
-    setTimeout(() => el.remove(), 300);
-  }, 2000);
+    el.classList.add('is-out');
+    el.addEventListener('animationend', () => el.remove(), { once: true });
+  }, 2400);
 }
 
-// Nav toggle (mobile)
-function initNavToggle() {
-  const toggle = document.querySelector('.nav-toggle');
-  const menu = document.getElementById('nav-menu');
-  if (!toggle || !menu) return;
-  function set(open) {
-    toggle.setAttribute('aria-expanded', String(open));
-    menu.style.display = open ? 'grid' : '';
-  }
-  toggle.addEventListener('click', () => set(toggle.getAttribute('aria-expanded') !== 'true'));
+/* --------------------------------------------------------------------------
+   Misc
+   -------------------------------------------------------------------------- */
+
+function initToTop() {
+  document.getElementById('toTop')?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: motionIsOff() ? 'auto' : 'smooth' });
+  });
 }
 
-// Year
 function setYear() {
   const el = document.getElementById('year');
-  if (el) el.textContent = new Date().getFullYear();
+  if (el) el.textContent = String(new Date().getFullYear());
 }
 
-// Scroll reveal
-function initReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-      }
-    });
-  }, { threshold: 0.1 });
+/* --------------------------------------------------------------------------
+   Boot
+   -------------------------------------------------------------------------- */
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
-
-// Event bindings
-window.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initMotion();
-  document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
-  document.getElementById('motionToggle')?.addEventListener('click', () => applyMotionPref(!state.reducedMotion));
-
+  initHeaderScroll();
+  initNav();
+  initScrollSpy();
+  initReveal();
   initRoleRotator();
-  initCtaGlow();
-  initSmoothScroll();
-  initParticles();
-  initSkillRings();
-  initSkillsModeToggle();
   initProjectFilters();
   initTimeline();
-  initModal();
+  initCopyEmail();
   initContactForm();
-  initNavToggle();
+  initToTop();
   setYear();
-  initReveal();
 });
-
-

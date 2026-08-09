@@ -1,16 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0B1220"/>
-      <stop offset="1" stop-color="#111A2E"/>
-    </linearGradient>
+    <pattern id="grid" width="70" height="70" patternUnits="userSpaceOnUse">
+      <path d="M70 0H0V70" stroke="#ffffff" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="bloom" cx="0" cy="0" r="1"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(1010 90) rotate(90) scale(380)">
+      <stop stop-color="#ff5b2e" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#ff5b2e" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <circle cx="220" cy="160" r="180" fill="#7A5CFF" fill-opacity=".18"/>
-  <circle cx="960" cy="120" r="160" fill="#56CCF2" fill-opacity=".14"/>
-  <text x="80" y="340" fill="#E6E9F2" font-family="Inter, Segoe UI, Arial" font-weight="800" font-size="72">Victor Adoghe</text>
-  <text x="80" y="410" fill="#B7C0D6" font-family="Inter, Segoe UI, Arial" font-size="34">I build web apps that humans enjoy.</text>
-  <rect x="80" y="440" width="360" height="6" rx="3" fill="#7A5CFF"/>
+
+  <rect width="1200" height="630" fill="#0a0a0b"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#bloom)"/>
+
+  <!-- Brand mark -->
+  <rect x="80" y="72" width="18" height="18" rx="3" fill="#ff5b2e"/>
+  <text x="116" y="88" fill="#f4f3f1"
+        font-family="JetBrains Mono, Consolas, monospace"
+        font-size="20" letter-spacing="3.2">VICTOR ADOGHE</text>
+
+  <!-- Eyebrow -->
+  <text x="80" y="268" fill="#ff5b2e"
+        font-family="JetBrains Mono, Consolas, monospace"
+        font-size="22" letter-spacing="4">FRONT-END ENGINEER</text>
+
+  <!-- Headline -->
+  <text x="80" y="382" fill="#f4f3f1"
+        font-family="Space Grotesk, Segoe UI, Arial, sans-serif"
+        font-weight="700" font-size="86" letter-spacing="-3">I build web interfaces</text>
+  <text x="80" y="472" fill="#f4f3f1"
+        font-family="Space Grotesk, Segoe UI, Arial, sans-serif"
+        font-weight="700" font-size="86" letter-spacing="-3">humans enjoy.</text>
+  <rect x="80" y="486" width="286" height="5" fill="#ff5b2e"/>
+
+  <!-- Footer rule -->
+  <rect x="80" y="546" width="1040" height="1" fill="#ffffff" fill-opacity=".14"/>
+  <text x="80" y="586" fill="#a3a19c"
+        font-family="JetBrains Mono, Consolas, monospace"
+        font-size="20" letter-spacing="2.4">React · TypeScript · Accessibility</text>
+  <text x="1120" y="586" text-anchor="end" fill="#a3a19c"
+        font-family="JetBrains Mono, Consolas, monospace"
+        font-size="20" letter-spacing="2.4">victoradoghe.github.io</text>
 </svg>
-
-
