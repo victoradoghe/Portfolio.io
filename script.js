@@ -224,7 +224,7 @@ function initRoleRotator() {
   const el = document.getElementById('roleRotator');
   if (!el) return;
 
-  const roles = ['Front-end Engineer', 'React Developer', 'UI Engineer'];
+  const roles = ['Software Engineer', 'Front-end Engineer', 'Mobile Developer', 'Desktop App Developer'];
   let i = 0;
 
   if (motionIsOff()) return;

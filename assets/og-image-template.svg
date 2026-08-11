@@ -24,12 +24,12 @@
   <!-- Eyebrow -->
   <text x="80" y="268" fill="#ff5b2e"
         font-family="JetBrains Mono, Consolas, monospace"
-        font-size="22" letter-spacing="4">FRONT-END ENGINEER</text>
+        font-size="22" letter-spacing="4">SOFTWARE ENGINEER</text>
 
   <!-- Headline -->
   <text x="80" y="382" fill="#f4f3f1"
         font-family="Space Grotesk, Segoe UI, Arial, sans-serif"
-        font-weight="700" font-size="86" letter-spacing="-3">I build web interfaces</text>
+        font-weight="700" font-size="86" letter-spacing="-3">I build interfaces</text>
   <text x="80" y="472" fill="#f4f3f1"
         font-family="Space Grotesk, Segoe UI, Arial, sans-serif"
         font-weight="700" font-size="86" letter-spacing="-3">humans enjoy.</text>
@@ -39,7 +39,7 @@
   <rect x="80" y="546" width="1040" height="1" fill="#ffffff" fill-opacity=".14"/>
   <text x="80" y="586" fill="#a3a19c"
         font-family="JetBrains Mono, Consolas, monospace"
-        font-size="20" letter-spacing="2.4">React · TypeScript · Accessibility</text>
+        font-size="20" letter-spacing="2.4">Web · Mobile · Desktop</text>
   <text x="1120" y="586" text-anchor="end" fill="#a3a19c"
         font-family="JetBrains Mono, Consolas, monospace"
         font-size="20" letter-spacing="2.4">victoradoghe.github.io</text>
