@@ -4,16 +4,12 @@
    ========================================================================== */
 
 const THEME_KEY = 'va_theme';
-const MOTION_KEY = 'va_motion';
 
 const root = document.documentElement;
-const state = { reducedMotion: false };
 
-const prefersReducedMotion = () =>
+/* Motion follows the OS setting — checked live so a mid-session change applies. */
+const motionIsOff = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* Motion is off when the OS asks for it OR the visitor flipped the toggle. */
-const motionIsOff = () => state.reducedMotion || prefersReducedMotion();
 
 /* --------------------------------------------------------------------------
    Theme
@@ -57,35 +53,6 @@ function initTheme() {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => root.removeAttribute('data-theme-switching'));
     });
-  });
-}
-
-/* --------------------------------------------------------------------------
-   Motion preference
-   -------------------------------------------------------------------------- */
-
-function applyMotion(reduced) {
-  state.reducedMotion = reduced;
-  root.setAttribute('data-reduced-motion', reduced ? 'reduce' : 'auto');
-
-  const btn = document.getElementById('motionToggle');
-  if (btn) {
-    btn.setAttribute('aria-pressed', String(reduced));
-    btn.setAttribute('data-motion', reduced ? 'reduced' : 'normal');
-    btn.setAttribute('aria-label', reduced ? 'Enable animations' : 'Reduce motion');
-  }
-
-  try { localStorage.setItem(MOTION_KEY, reduced ? 'reduce' : 'auto'); } catch (_) {}
-}
-
-function initMotion() {
-  let saved = null;
-  try { saved = localStorage.getItem(MOTION_KEY); } catch (_) {}
-  applyMotion(saved ? saved === 'reduce' : prefersReducedMotion());
-
-  document.getElementById('motionToggle')?.addEventListener('click', () => {
-    applyMotion(!state.reducedMotion);
-    toast(state.reducedMotion ? 'Motion reduced' : 'Motion on');
   });
 }
 
@@ -475,7 +442,6 @@ function setYear() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  initMotion();
   initHeaderScroll();
   initNav();
   initScrollSpy();

@@ -331,7 +331,6 @@ p { margin: 0; }
 }
 .icon-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
 .icon-btn svg { width: 18px; height: 18px; }
-.icon-btn[data-motion='reduced'] { color: var(--accent); border-color: var(--accent); }
 
 /* Theme icon swap */
 .icon-sun, .icon-moon { display: none; }
@@ -1384,7 +1383,7 @@ p { margin: 0; }
 }
 [data-reveal].is-revealed { opacity: 1; transform: none; }
 
-/* Respect both the OS setting and the in-page motion toggle */
+/* Follow the visitor's OS motion setting */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -1394,24 +1393,11 @@ p { margin: 0; }
   }
   [data-reveal] { opacity: 1; transform: none; }
   .word { transform: none; }
+  .hero-bloom,
+  .status-dot::after,
+  .scroll-cue-line::after { animation: none; }
+  .ticker-track { animation-play-state: paused; }
 }
-
-:root[data-reduced-motion='reduce'] {
-  scroll-behavior: auto;
-}
-:root[data-reduced-motion='reduce'] *,
-:root[data-reduced-motion='reduce'] *::before,
-:root[data-reduced-motion='reduce'] *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-}
-:root[data-reduced-motion='reduce'] [data-reveal] { opacity: 1; transform: none; }
-:root[data-reduced-motion='reduce'] .word { transform: none; }
-:root[data-reduced-motion='reduce'] .hero-bloom,
-:root[data-reduced-motion='reduce'] .status-dot::after,
-:root[data-reduced-motion='reduce'] .scroll-cue-line::after { animation: none; }
-:root[data-reduced-motion='reduce'] .ticker-track { animation-play-state: paused; }
 
 /* 17. Case-study pages ----------------------------------------------------- */
 
