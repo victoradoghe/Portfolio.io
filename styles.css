@@ -19,6 +19,7 @@
    15. Toasts & utilities
    16. Motion / reveal
    17. Case-study pages
+   18. Responsive & touch refinements
    ========================================================================== */
 
 /* 1. Tokens ---------------------------------------------------------------- */
@@ -61,7 +62,15 @@
   --max:       1440px;
   --gap:       clamp(1rem, 2vw, 2rem);
   --section-y: clamp(4.5rem, 10vw, 10rem);
-  --header-h:  68px;
+  --header-h:  clamp(58px, 8vw, 68px);
+
+  /* Notch / rounded-display insets. Fall back to 0 where env() is unsupported. */
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+
+  /* Minimum comfortable touch target — applied on coarse pointers only */
+  --tap: 44px;
 
   --r:    2px;
   --r-md: 4px;
@@ -137,7 +146,10 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* `clip` contains stray overflow without making <body> a scroll container,
+     which is what keeps html's scroll-padding-top working for anchor jumps. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body.is-locked { overflow: hidden; }
@@ -155,6 +167,45 @@ body::after {
 
 img, svg, video { display: block; max-width: 100%; }
 img { height: auto; }
+
+/* Long unbroken strings (URLs, package names) must not push the page sideways */
+p, li, dd, h1, h2, h3, h4 { overflow-wrap: break-word; }
+
+/* Code samples in the articles/case studies are authored wide on purpose —
+   let them scroll inside their own box rather than widening the document. */
+pre {
+  margin: 1.25rem 0;
+  padding: 1rem clamp(0.85rem, 3vw, 1.25rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  font-size: clamp(0.78rem, 0.7rem + 0.35vw, 0.9rem);
+  line-height: 1.6;
+  tab-size: 2;
+}
+pre code {
+  display: block;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  white-space: pre;
+}
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0.15em 0.4em;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow-wrap: break-word;
+}
+
+/* Same rule for any table that ends up in an article */
+.table-scroll, table { display: block; max-width: 100%; overflow-x: auto; }
 
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
@@ -194,11 +245,13 @@ img { height: auto; }
 
 /* 3. Layout primitives ----------------------------------------------------- */
 
+/* padding-inline uses max() so a landscape notch never eats the first character */
 .container {
   width: 100%;
   max-width: var(--max);
   margin-inline: auto;
-  padding-inline: var(--pad);
+  padding-left: max(var(--pad), var(--safe-l));
+  padding-right: max(var(--pad), var(--safe-r));
 }
 
 .section { padding-block: var(--section-y); }
@@ -499,12 +552,18 @@ p { margin: 0; }
   inset: 0;
   z-index: 90;
   display: grid;
+  /* `safe` keeps the top of the list reachable once it outgrows the viewport */
   align-content: center;
-  padding: var(--header-h) var(--pad) var(--pad);
+  align-content: safe center;
+  padding-block: calc(var(--header-h) + 1rem) calc(var(--pad) + var(--safe-b));
   background: var(--bg);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.35s var(--ease), visibility 0.35s;
+  /* A landscape phone can't fit five 3.5rem links — scroll instead of clipping */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .nav-overlay[hidden] { display: none; } /* pre-JS / no-JS fallback */
 .nav-overlay.is-open { opacity: 1; visibility: visible; }
@@ -709,6 +768,15 @@ p { margin: 0; }
   text-transform: uppercase;
   color: var(--ink-3);
 }
+/* Three uppercase mono labels don't survive a 320px viewport — tighten the
+   tracking first, and only drop to two columns when that stops being enough. */
+@media (max-width: 420px) {
+  .hero-stats { gap: 1.25rem 1rem; }
+  .hero-stats dt { letter-spacing: 0.06em; font-size: 0.68rem; }
+}
+@media (max-width: 340px) {
+  .hero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 .hero-stats dd {
   margin: 0.4rem 0 0;
   font-family: var(--font-display);
@@ -814,6 +882,10 @@ p { margin: 0; }
   align-items: baseline;
 }
 .fact:last-child { border-bottom: 1px solid var(--line); }
+/* Below this the value column is ~150px and every entry wraps to four lines */
+@media (max-width: 480px) {
+  .fact { grid-template-columns: 1fr; gap: 0.35rem; }
+}
 .fact dt {
   font: 400 var(--fs-meta) / 1.4 var(--font-mono);
   letter-spacing: var(--tracking-meta);
@@ -835,7 +907,11 @@ p { margin: 0; }
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(2.5rem, 5vw, 4.5rem) var(--gap);
 }
-@media (max-width: 780px) { .work-grid { grid-template-columns: 1fr; } }
+/* Two columns hold up through tablet portrait (768–834px); below that a card
+   gets too narrow for the title + description to read well. */
+@media (max-width: 700px) {
+  .work-grid { grid-template-columns: 1fr; gap: clamp(2.5rem, 9vw, 3.5rem); }
+}
 
 .work-card {
   display: grid;
@@ -1142,7 +1218,9 @@ p { margin: 0; }
   gap: 0.65rem;
   max-width: 68ch;
 }
-@media (min-width: 700px) {
+/* 701px, not 700 — at exactly 700 the max-width query below also matches and
+   the bullets would indent under a header that had already collapsed. */
+@media (min-width: 701px) {
   .timeline-content ul { margin-left: calc(0.26 * 100% + clamp(1.5rem, 4vw, 4rem)); }
 }
 .timeline-content li {
@@ -1345,10 +1423,13 @@ p { margin: 0; }
 
 /* 15. Toasts & utilities --------------------------------------------------- */
 
+/* Pinned to both edges so a long toast wraps inside the viewport instead of
+   overflowing it; justify-items keeps short ones hugging the right. */
 .toast-container {
   position: fixed;
-  right: var(--pad);
-  bottom: 1.5rem;
+  left: max(var(--pad), var(--safe-l));
+  right: max(var(--pad), var(--safe-r));
+  bottom: calc(1.5rem + var(--safe-b));
   z-index: 300;
   display: grid;
   gap: 0.5rem;
@@ -1359,6 +1440,7 @@ p { margin: 0; }
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  max-width: 100%;
   padding: 0.75rem 1rem;
   background: var(--ink);
   color: var(--bg);
@@ -1436,3 +1518,158 @@ p { margin: 0; }
 .case ul li::marker { color: var(--accent); }
 .case a { color: var(--accent); }
 .case img { border: 1px solid var(--line); border-radius: var(--r-md); margin-block: 1.5rem; }
+.case hr { border: 0; border-top: 1px solid var(--line); margin-block: 1.25rem; }
+.case .small { font-size: var(--fs-meta); font-family: var(--font-mono); letter-spacing: 0.06em; }
+
+/* 18. Responsive & touch refinements ---------------------------------------
+   The per-component breakpoints live next to their components above. What
+   follows is the cross-cutting behaviour: pointer type, screen orientation,
+   and the two viewport extremes (small phone, tablet).
+   -------------------------------------------------------------------------- */
+
+/* --- Coarse pointers: everything tappable clears 44×44 ---------------------
+   Sized with min-height/min-width rather than extra padding so the visual
+   design is unchanged on mouse-driven screens. */
+@media (pointer: coarse) {
+  .icon-btn,
+  .nav-toggle {
+    width: var(--tap);
+    height: var(--tap);
+  }
+
+  .btn,
+  .chip,
+  .copy-btn,
+  .socials a {
+    min-height: var(--tap);
+  }
+
+  .btn-sm { padding-inline: 1.1rem; }
+
+  /* Links with no decoration pinned to the baseline can simply grow. They are
+     already inline-flex + centred, so min-height alone re-centres the label. */
+  .brand,
+  .to-top,
+  .case-back,
+  .nav-overlay-foot a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+  }
+
+  /* These two carry a background-image underline sitting at the bottom edge,
+     so growing the box would strand the rule below the text. Their hit area is
+     extended with a centred pseudo-element instead: a fixed 44px band, which
+     lands correctly whatever the mono line-box happens to measure. */
+  .work-links a,
+  .contact-email {
+    position: relative;
+  }
+  .work-links a::after,
+  .contact-email::after {
+    content: '';
+    position: absolute;
+    left: -0.4rem;
+    right: -0.4rem;
+    top: 50%;
+    height: var(--tap);
+    transform: translateY(-50%);
+  }
+
+  /* Comfortable thumb spacing once the targets are bigger. The row gaps matter
+     most — these rows wrap, and 44px bands would otherwise overlap vertically. */
+  .work-links { gap: 1.5rem; }
+  .footer-bottom { gap: 1.25rem; }
+  .nav-overlay-foot { gap: 0.25rem 1.25rem; }
+}
+
+/* --- Hoverless devices: don't let tap-triggered :hover states stick -------- */
+@media (hover: none) {
+  .work-card:hover .work-media img,
+  .socials a:hover,
+  .brand:hover .brand-mark {
+    transform: none;
+  }
+  .work-card:hover .work-media::after { opacity: 0; }
+  /* Skill tags aren't interactive at all — a stuck accent state is pure noise */
+  .skill-tags li:hover {
+    transform: none;
+    border-color: var(--line);
+    background: transparent;
+    color: var(--ink);
+  }
+  /* A stray tap on the marquee shouldn't pause it for the rest of the visit */
+  .ticker:hover .ticker-track { animation-play-state: running; }
+}
+
+/* --- Tablet (portrait ~768–834px, landscape up to 1180px) ------------------ */
+@media (min-width: 701px) and (max-width: 1024px) {
+  .work-card .work-desc { max-width: 42ch; }
+  .about-body p { max-width: 62ch; }
+  /* The section rule and its meta caption stop fitting on one line first */
+  .section-head { row-gap: 0.35rem; }
+}
+
+/* --- Small phones ---------------------------------------------------------- */
+@media (max-width: 480px) {
+  /* Side-by-side CTAs wrap into two ragged half-width buttons; stacking them
+     full-width reads better and gives each a full-width tap target. */
+  .hero-ctas { flex-direction: column; align-items: stretch; }
+  .hero-ctas .btn { width: 100%; }
+
+  .section-head { row-gap: 0.35rem; }
+  .work-head { flex-wrap: wrap; row-gap: 0.25rem; }
+  .work-head .work-year { flex-basis: 100%; }
+
+  .footer-top { align-items: flex-start; gap: 1.5rem; }
+  /* .socials is shrink-to-fit as a flex item, so it needs an explicit width
+     before flex:1 on the children has anything to distribute. */
+  .socials { width: 100%; }
+  .socials a { flex: 1 1 auto; justify-content: center; }
+
+  .contact-email { font-size: clamp(1.25rem, 6.5vw, 1.75rem); }
+
+  /* A 70px blur over a 58vw circle is a measurable paint cost on mid-range
+     phones, and at this size the bloom reads the same either way. */
+  .hero-bloom { filter: blur(45px); width: min(80vw, 420px); }
+}
+
+@media (max-width: 360px) {
+  .brand { font-size: 0.72rem; letter-spacing: 0.1em; }
+  .hero-title { letter-spacing: -0.035em; }
+  .chip { padding-inline: 0.7rem; }
+}
+
+/* --- Short viewports: keep the whole menu on one screen -------------------
+   At the default 3.5rem the five links plus the footer run ~710px, which forces
+   a scroll on a 568px phone. Scrolling still works as a safety net (see the
+   overflow rules on .nav-overlay) — this just means it's rarely needed. */
+@media (max-height: 700px) {
+  .nav-overlay a { font-size: clamp(1.5rem, 7vw, 2.25rem); padding-block: 0.55rem; }
+  .nav-overlay-foot { margin-top: 1.5rem; }
+}
+
+/* --- Short viewports (phones in landscape, small split-screen windows) -----
+   The hero is built around a tall canvas; at 375px of height its min-height
+   floor and vertical centring push the CTAs below the fold. */
+@media (max-height: 540px) and (orientation: landscape) {
+  .hero {
+    min-height: 0;
+    align-items: flex-start;
+    padding-block: calc(var(--header-h) + 1.75rem) 2.5rem;
+  }
+  .hero-stats { margin-top: 2rem; }
+  .section { padding-block: clamp(3rem, 8vh, 4.5rem); }
+
+  .nav-overlay { align-content: start; }
+  .nav-overlay a { font-size: clamp(1.4rem, 5vh, 2rem); padding-block: 0.5rem; }
+  .nav-overlay-foot { margin-top: 1.25rem; }
+}
+
+/* --- Very wide screens ------------------------------------------------------
+   Past the 1440px container the fixed viewport units keep growing, so cap the
+   places where that would otherwise stretch a line of text too far. */
+@media (min-width: 1600px) {
+  .about-body p,
+  .work-desc { max-width: 52ch; }
+}
