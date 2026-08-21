@@ -364,6 +364,10 @@ p { margin: 0; }
 
 .btn-sm { padding: 0.6rem 0.95rem; }
 
+/* Resume button carries both an icon and a label; the icon only appears once
+   the button collapses at the nav breakpoint. */
+.resume-btn .resume-icon { display: none; }
+
 .btn .arrow { transition: transform 0.35s var(--ease); }
 .btn:hover .arrow { transform: translateX(4px); }
 
@@ -619,7 +623,18 @@ p { margin: 0; }
 @media (max-width: 880px) {
   .nav-menu { display: none; }
   .nav-toggle { display: inline-flex; flex-direction: column; }
-  .header-actions .btn { display: none; }
+
+  /* The resume button collapses to an icon rather than disappearing - a visitor
+     on a phone still needs to be able to download the CV without hunting for it
+     inside the menu. Sized to match the theme toggle sitting next to it. */
+  .header-actions .resume-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-color: var(--line);
+  }
+  .header-actions .resume-btn .resume-label { display: none; }
+  .header-actions .resume-btn .resume-icon { display: block; width: 18px; height: 18px; }
 }
 
 /* 7. Hero ------------------------------------------------------------------ */
@@ -1664,6 +1679,17 @@ p { margin: 0; }
   .nav-overlay { align-content: start; }
   .nav-overlay a { font-size: clamp(1.4rem, 5vh, 2rem); padding-block: 0.5rem; }
   .nav-overlay-foot { margin-top: 1.25rem; }
+}
+
+/* --- Collapsed resume button on touch devices --------------------------------
+   Once collapsed to an icon it should stay square at the full tap target, the
+   way the toggles beside it do. `.btn`'s min-height alone would leave it
+   oblong, so both axes are set here. */
+@media (pointer: coarse) and (max-width: 880px) {
+  .header-actions .resume-btn {
+    width: var(--tap);
+    height: var(--tap);
+  }
 }
 
 /* --- Very wide screens ------------------------------------------------------
